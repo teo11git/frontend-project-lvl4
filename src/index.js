@@ -29,3 +29,4 @@ const container = document.querySelector('#chat');
 container.append(card);
 
 console.log('it works!');
+// Бэкенд предоставляет коонтейнер для сборки. Здесь формируется траничка.

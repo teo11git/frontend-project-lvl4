@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "type": "module",
   "engines": {
-    "node": "14.x"
+    "node": "13.x 14.x"
   },
   "scripts": {
     "test": "echo 'no tests for this project'",

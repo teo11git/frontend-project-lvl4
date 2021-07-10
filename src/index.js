@@ -5,10 +5,13 @@ import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
+import app from './app.jsx';
+
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
+/*
 const p = document.createElement('p');
 p.classList.add('card-text');
 p.textContent = 'It works!';
@@ -29,4 +32,4 @@ const container = document.querySelector('#chat');
 container.append(card);
 
 console.log('it works!');
-// Бэкенд предоставляет коонтейнер для сборки. Здесь формируется траничка.
+*/

@@ -1,22 +1,60 @@
-import React from 'react';
-import { Card, Form, Button } from 'react-bootstrap';
+import React, { useContext } from 'react';
+
+import { useHistory, useLocation } from 'react-router-dom';
+import {
+  Card, Form, Button, Alert,
+} from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
+import paths from '../routes.js';
+import AuthContext from '../Contexts/AuthContext.js';
 
 const schema = yup.object().shape({
   username: yup.string().required('No name provided'),
   password: yup.string().required('No password provided'),
 });
 
-const submitHandler = (e) => {
-  e.preventDefault();
-};
-
-const submitForm = (values, formik) => {
-  alert(JSON.stringify(values, null, 2));
-};
-
 const LoginForm = () => {
+  const { isLoggedIn, setLoginState } = useContext(AuthContext);
+
+  const location = useLocation();
+
+  const history = useHistory();
+
+  const makeRedirect = (to, history) => {
+    history.replace(to);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
+
+  const setToLocalStorage = (values) => {
+    Object.entries(values).forEach(([key, value]) => window.localStorage.setItem(key, value));
+  };
+
+  const sendForm = async ({ username, password }, formik) => {
+    console.log(`Start submit ${username} / ${password}`);
+    try {
+      const { data } = await axios.post('api/v1/login', {
+        username, password,
+      });
+
+      await setToLocalStorage({
+        token: data.token,
+        username: data.username,
+      });
+
+      await formik.setStatus('Authentification success');
+      await setLoginState(true);
+      await makeRedirect(paths.mainPagePath(), history);
+    } catch (e) {
+      console.log(e);
+      formik.setStatus('Authentification error');
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -25,13 +63,13 @@ const LoginForm = () => {
     validateOnChange: false,
     validateOnBlur: false,
     handleSubmit: submitHandler,
-    onSubmit: submitForm,
+    onSubmit: sendForm,
     validationSchema: schema,
+    myAuthError: null,
   });
   const {
     handleSubmit, handleChange, values, touched, errors,
   } = formik;
-  console.log(formik);
   return (
     <Card className="mx-auto" style={{ width: '20rem' }}>
       <Card.Body>
@@ -44,7 +82,7 @@ const LoginForm = () => {
             <Form.Control
               type="text"
               name="username"
-              onChange={formik.handleChange}
+              onChange={handleChange}
               values={values.username}
               isValid={touched.username && !errors.username}
               isInvalid={!!errors.username}
@@ -59,7 +97,7 @@ const LoginForm = () => {
               type="password"
               name="password"
               values={values.password}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               isValid={touched.password && !errors.password}
               isInvalid={!!errors.password}
               placeholder="Password"
@@ -71,6 +109,13 @@ const LoginForm = () => {
           </Button>
         </Form>
       </Card.Body>
+      {formik.status === 'Authentification error'
+        ? (
+          <Card.Footer>
+            <Alert variant="danger" className="text-center">Cannot found username or password!</Alert>
+          </Card.Footer>
+        )
+        : null}
     </Card>
   );
 };

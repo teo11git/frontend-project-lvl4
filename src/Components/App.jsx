@@ -6,6 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import AuthContext from '../Contexts/AuthContext.js';
+import Chat from './Chat.jsx';
 import LoginForm from './LoginForm.jsx';
 import paths from '../routes.js';
 
@@ -17,7 +18,7 @@ export default function App() {
   const hasAuthToken = () => {
     const storage = window.localStorage;
     return storage.getItem('token') !== null;
-  }
+  };
 
   console.log('Expirience from App -------');
   console.log(isLoggedIn);
@@ -30,7 +31,7 @@ export default function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            {hasAuthToken() ? <MainPage /> : <Redirect to={loginPagePath()} />}
+            {hasAuthToken() ? <Chat /> : <Redirect to={loginPagePath()} />}
           </Route>
           <Route path={loginPagePath()}>
             <LoginForm />

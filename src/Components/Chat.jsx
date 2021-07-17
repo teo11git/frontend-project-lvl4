@@ -1,37 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { addChannel } from '../features/channelsSlice.js';
-import { addMessage } from '../features/messagesSlice';
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 
-import paths from '../routes.js';
+import Channels from './Channels.jsx';
+import CurrentChannel from './CurrentChannel';
 
-const makeRequest = async (token, dispatch, setStatus) => {
-  try {
-    setStatus('gettingData');
-    const responce = await axios.get('/api/v1/data',
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    setStatus('success');
-    const { channels, messages, currentChannelId } = responce.data;
-    channels.forEach((channel) => dispatch(addChannel(channel)));
-    messages.forEach((message) => dispatch(addMessage(message)));
-  } catch (e) {
-    setStatus('failed');
-  }
-};
+const Chat = () => (
+  <Container fluid="md" className="h-100 py-3 justify-content-around">
+    <Row className="h-100 mb-3">
+      <Col lg={3} className="d-flex flex-column mb-0 h-100 px-0">
+        <Channels />
+      </Col>
+      <Col lg={9} className="d-flex flex-column border-left px-0">
+        <CurrentChannel />
+      </Col>
+    </Row>
 
-const Chat = () => {
-  const [fetchingDataStatus, setStatus] = useState('noActivity');
-  const channels = useSelector((state) => state.channels);
-  const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
-  useEffect(() => {
-    makeRequest(token, dispatch, setStatus);
-  }, [dispatch]);
-
-  return <h1>Hello, i am your chat</h1>;
-};
+  </Container>
+);
 
 export default Chat;

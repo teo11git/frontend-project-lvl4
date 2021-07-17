@@ -6,9 +6,9 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
 import paths from '../routes.js';
-import AuthContext from '../Contexts/AuthContext.js';
+
+import { useAuth } from '../features/validation.js';
 
 const schema = yup.object().shape({
   username: yup.string().required('No name provided'),
@@ -16,10 +16,8 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { isLoggedIn, setLoginState } = useContext(AuthContext);
-
+  const auth = useAuth();
   const location = useLocation();
-
   const history = useHistory();
 
   const makeRedirect = (to, history) => {
@@ -30,29 +28,15 @@ const LoginForm = () => {
     e.preventDefault();
   };
 
-  const setToLocalStorage = (values) => {
-    Object.entries(values).forEach(([key, value]) => window.localStorage.setItem(key, value));
-  };
-
-  const sendForm = async ({ username, password }, formik) => {
-    console.log(`Start submit ${username} / ${password}`);
-    try {
-      const { data } = await axios.post('api/v1/login', {
-        username, password,
-      });
-
-      await setToLocalStorage({
-        token: data.token,
-        username: data.username,
-      });
-
-      await formik.setStatus('Authentification success');
-      await setLoginState(true);
-      await makeRedirect(paths.mainPagePath(), history);
-    } catch (e) {
-      console.log(e);
-      formik.setStatus('Authentification error');
-    }
+  const sendForm = (values, formik) => {
+    const onSuccess = () => {
+      formik.setStatus('Auth success');
+      makeRedirect(paths.mainPagePath(), history);
+    };
+    const onError = () => {
+      formik.setStatus('Auth error');
+    };
+    auth.signin(values, onSuccess, onError);
   };
 
   const formik = useFormik({
@@ -102,17 +86,23 @@ const LoginForm = () => {
               isInvalid={!!errors.password}
               placeholder="Password"
             />
-            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            <Form.Control.Feedback
+              type="invalid"
+            >
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
           </Button>
         </Form>
       </Card.Body>
-      {formik.status === 'Authentification error'
+      {formik.status === 'Auth error'
         ? (
           <Card.Footer>
-            <Alert variant="danger" className="text-center">Cannot found username or password!</Alert>
+            <Alert variant="danger" className="text-center">
+              Cannot found username or password!
+            </Alert>
           </Card.Footer>
         )
         : null}

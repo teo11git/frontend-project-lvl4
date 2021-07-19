@@ -24,10 +24,6 @@ const LoginForm = () => {
     history.replace(to);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-  };
-
   const sendForm = (values, formik) => {
     const onSuccess = () => {
       formik.setStatus('Auth success');
@@ -46,10 +42,9 @@ const LoginForm = () => {
     },
     validateOnChange: false,
     validateOnBlur: false,
-    handleSubmit: submitHandler,
+    handleSubmit: (e) => e.preventDefault(),
     onSubmit: sendForm,
     validationSchema: schema,
-    myAuthError: null,
   });
   const {
     handleSubmit, handleChange, values, touched, errors,

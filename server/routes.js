@@ -42,6 +42,7 @@ export default (app, defaultState = {}) => {
   const state = buildState(defaultState);
 
   app.io.on('connect', (socket) => {
+    console.log('>>>>>>>-CONNECTED_TO_SOCKET-<<<<<<<');
     console.log({ 'socket.id': socket.id });
 
     socket.on('newMessage', (message, acknowledge = _.noop) => {

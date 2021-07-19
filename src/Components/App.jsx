@@ -15,17 +15,9 @@ import paths from '../routes.js';
 
 export default function App() {
   const { loginPagePath } = paths;
-  // const [isLoggedIn, setStatus] = useState('false');
-  // const setLoginState = (val) => setStatus(val);
-
-  //const hasAuthToken = () => {
-  //  const storage = window.localStorage;
-  //  return storage.getItem('token') !== null;
-  //};
 
   console.log('Expirience from App -------');
 
-  // const MainPage = () => (<h2>Main</h2>);
   const PageNotFound = () => (<h2>Oops Page Not Found</h2>);
 
   const ProvideAuth = ({ children }) => {

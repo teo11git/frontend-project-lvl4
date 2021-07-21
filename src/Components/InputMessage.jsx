@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useApi } from '../features/socketApi.js';
+import { useAuth } from '../features/authorization.js';
 
 const schema = yup.object().shape({
   message:
@@ -12,9 +15,15 @@ const schema = yup.object().shape({
       .max(280)    
 });
 
-const sendMessage = (...args) => console.log(args);
-
 const InputMessage = () => {
+  const socketApi = useApi();
+  const user = useSelector((state) => state.authentification.user);
+
+  const sendMessage = (data, formikHelpers) => {
+    const { message: text } = data;
+    const message = { text, autor: user };
+    socketApi.sendNewMessage(message);
+  }
   const formik = useFormik({
     initialValues: {
       message: '',

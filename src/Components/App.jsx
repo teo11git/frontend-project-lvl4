@@ -7,10 +7,11 @@ import {
 } from 'react-router-dom';
 
 import AuthContext from '../Contexts/AuthContext.js';
-import { useProvideAuth, useAuth } from '../features/validation.js';
+import { useProvideAuth, useAuth } from '../features/authorization.js';
 
 import MainPage from './MainPage.jsx';
 import LoginForm from './LoginForm.jsx';
+import SigninForm from './SigninForm.jsx';
 import paths from '../routes.js';
 
 export default function App() {
@@ -56,6 +57,9 @@ export default function App() {
           </PrivateRoute>
           <Route path="/login">
             <LoginForm />
+          </Route>
+          <Route exact path="/signin">
+            <SigninForm />
           </Route>
           <Route path="*">
             <PageNotFound />

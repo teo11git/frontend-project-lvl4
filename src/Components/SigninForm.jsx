@@ -1,29 +1,32 @@
 import React, { useContext } from 'react';
 
-import { useHistory, useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Card, Form, Button, Alert,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import SigninForm from './SigninForm.jsx';
 import paths from '../routes.js';
+
 import { useAuth } from '../features/authorization.js';
 
 const schema = yup.object().shape({
   username: yup.string().required('No name provided'),
   password: yup.string().required('No password provided'),
+  passwordConfirm: yup.string().required('Please repeat password')
+       .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
 const LoginForm = () => {
   const auth = useAuth();
   const location = useLocation();
   const history = useHistory();
-  const { url, path } = useRouteMatch();
 
   const makeRedirect = (to, history) => history.replace(to);
 
   const sendForm = (values, formik) => {
+    console.log(values);
+    /*
     const onSuccess = () => {
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPagePath(), history);
@@ -32,12 +35,14 @@ const LoginForm = () => {
       formik.setStatus('Auth error');
     };
     auth.signin(values, onSuccess, onError);
+    */
   };
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
+      passwordConfirm: '',
     },
     validateOnChange: false,
     validateOnBlur: false,
@@ -49,8 +54,8 @@ const LoginForm = () => {
     handleSubmit, handleChange, values, touched, errors,
   } = formik;
   return (
-    <Card className="mx-auto mt-3" style={{ width: '20rem' }}>
-      <Card.Header><h4>Log in</h4></Card.Header>
+    <Card className="mx-auto" style={{ width: '20rem' }}>
+    <Card.Header><h4>Sign in</h4></Card.Header>
       <Card.Body>
         <Form
           onSubmit={handleSubmit}
@@ -79,7 +84,7 @@ const LoginForm = () => {
               onChange={handleChange}
               isValid={touched.password && !errors.password}
               isInvalid={!!errors.password}
-              placeholder="Password"
+              placeholder="enter password"
             />
             <Form.Control.Feedback
               type="invalid"
@@ -87,12 +92,26 @@ const LoginForm = () => {
               {errors.password}
             </Form.Control.Feedback>
           </Form.Group>
-          <div className="d-flex justify-content-between">
-          <Button  variant="primary" type="submit">
+          <Form.Group controlId="formBasicPasswordConf">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="passwordConfirm"
+              values={values.passwordConfirm}
+              onChange={handleChange}
+              isValid={touched.passwordConfirm && !errors.passwordConfirm}
+              isInvalid={!!errors.passwordConfirm}
+              placeholder="repeat password"
+            />
+            <Form.Control.Feedback
+              type="invalid"
+            >
+              {errors.passwordConfirm}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Button variant="primary" type="submit">
             Submit
           </Button>
-        <Link to="/signin">or signin</Link>
-          </div>
         </Form>
       </Card.Body>
       {formik.status === 'Auth error'
@@ -109,3 +128,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+

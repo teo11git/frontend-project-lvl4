@@ -11,7 +11,7 @@ import InputMessage from './InputMessage.jsx';
 
 const Message = ({ message }) => (
   <div className="text-break mb-2 mr-auto">
-    <b>{message.autor}</b>
+    <b>{message.autor}: </b>
   {message.text}
   </div>
 );
@@ -27,6 +27,7 @@ const InputMessage = () => (
 */
 const MessageBox = () => {
   const messages = useSelector((state) => state.messages);
+  console.log(messages);
   return (
     messages.map((message) => (
       <div key={message.id} id="message-box" className="p-3 d-flex flex-column scroll-enabled">

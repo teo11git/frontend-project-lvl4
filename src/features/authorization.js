@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import AuthContext from '../Contexts/AuthContext.js';
 import paths from '../routes.js';
+import { store } from '../store.js';
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -31,22 +32,24 @@ const makeAuth = {
     // some logic
     makeAuth.isAuthenticated = false;
   },
+  
+  login: () => {}
 };
 
 export const useProvideAuth = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   const signin = (data, cb, errCb) => makeAuth.signin(data, () => {
-    setUser('user');
+    store.dispatch(setCurrentUser({ user: data.username }));
     cb();
   }, errCb);
 
   const signout = async (cb) => makeAuth.signout(() => {
-    setUser(null);
+    store.dispatch(setCurrentUser({ user: null }));
     cb();
   });
 
   return {
-    user, signin, signout,
+    signin, signout,
   };
 };

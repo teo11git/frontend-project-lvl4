@@ -11,7 +11,7 @@ import { useProvideAuth, useAuth } from '../features/authorization.js';
 
 import MainPage from './MainPage.jsx';
 import LoginForm from './LoginForm.jsx';
-import SigninForm from './SigninForm.jsx';
+import SignupForm from './SignupForm.jsx';
 import paths from '../routes.js';
 
 export default function App() {
@@ -58,8 +58,8 @@ export default function App() {
           <Route path="/login">
             <LoginForm />
           </Route>
-          <Route exact path="/signin">
-            <SigninForm />
+          <Route exact path="/signup">
+            <SignupForm />
           </Route>
           <Route path="*">
             <PageNotFound />

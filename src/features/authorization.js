@@ -1,8 +1,10 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
 import AuthContext from '../Contexts/AuthContext.js';
+import { setCurrentUser } from '../slices/authentificationSlice.js';
 import paths from '../routes.js';
 import { store } from '../store.js';
+
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -13,43 +15,63 @@ const setToLocalStorage = (values) => {
 
 const makeAuth = {
   isAuthenticated: false,
-  signin: (data, cb, errCb) => {
+  login: (data, cb, errCb) => {
     axios.post('api/v1/login', data)
       .then(({ data }) => {
         const { token, username } = data;
         setToLocalStorage({
           token, username,
         });
-        cb();
+        cb(username);
         makeAuth.isAuthenticated = true;
       }).catch((err) => {
         console.log('Error');
         console.log(err);
-        errCb();
+        errCb(err);
       });
   },
-  signout: (cb) => {
-    // some logic
+
+  logout: (cb) => {
+    localStorage.clear();
+    cb();
     makeAuth.isAuthenticated = false;
   },
   
-  login: () => {}
+  signup: (data, cb, errCb) => {
+    axios.post('api/v1/signup', data)
+      .then(({ data }) => {
+        const { token, username } = data;
+        setToLocalStorage({
+          token, username,
+        });
+        cb(username);
+        makeAuth.isAuthenticated = true;
+      }).catch((err) => {
+        console.log(err);
+        errCb(err);
+      });
+  },
 };
 
 export const useProvideAuth = () => {
   // const [user, setUser] = useState(null);
 
-  const signin = (data, cb, errCb) => makeAuth.signin(data, () => {
-    store.dispatch(setCurrentUser({ user: data.username }));
+  const login = (data, cb, errCb) => makeAuth.login(data, (username) => {
+    store.dispatch(setCurrentUser({ user: username }));
     cb();
   }, errCb);
 
-  const signout = async (cb) => makeAuth.signout(() => {
+  const logout = async (cb) => makeAuth.logout(() => {
     store.dispatch(setCurrentUser({ user: null }));
     cb();
   });
 
+  const signup = (data, cb, errCb) => makeAuth.signup(data, (username) => {
+    store.dispatch(setCurrentUser({ user: username}));
+    cb();
+  }, errCb);
+
   return {
-    signin, signout,
+    login, logout, signup
   };
 };

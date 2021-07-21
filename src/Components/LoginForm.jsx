@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import SigninForm from './SigninForm.jsx';
+import SignupForm from './SignupForm.jsx';
 import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
 
@@ -31,7 +31,7 @@ const LoginForm = () => {
     const onError = () => {
       formik.setStatus('Auth error');
     };
-    auth.signin(values, onSuccess, onError);
+    auth.login(values, onSuccess, onError);
   };
 
   const formik = useFormik({
@@ -91,7 +91,7 @@ const LoginForm = () => {
           <Button  variant="primary" type="submit">
             Submit
           </Button>
-        <Link to="/signin">or signin</Link>
+        <Link to="/signup">or signin</Link>
           </div>
         </Form>
       </Card.Body>

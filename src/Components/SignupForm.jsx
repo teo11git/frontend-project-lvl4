@@ -17,7 +17,7 @@ const schema = yup.object().shape({
        .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-const LoginForm = () => {
+const SignupForm = () => {
   const auth = useAuth();
   const location = useLocation();
   const history = useHistory();
@@ -26,16 +26,15 @@ const LoginForm = () => {
 
   const sendForm = (values, formik) => {
     console.log(values);
-    /*
     const onSuccess = () => {
+      console.log('Success');
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPagePath(), history);
     };
-    const onError = () => {
+    const onError = (err) => {
       formik.setStatus('Auth error');
     };
-    auth.signin(values, onSuccess, onError);
-    */
+    auth.signup(values, onSuccess, onError);
   };
 
   const formik = useFormik({
@@ -127,5 +126,5 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;
 

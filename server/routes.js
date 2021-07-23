@@ -51,7 +51,7 @@ export default (app, defaultState = {}) => {
         id: getNextId(),
       };
       state.messages.push(messageWithId);
-      acknowledge({ status: 'ok' });
+      acknowledge({ status: 'ok', data: messageWithId });
       // app.io.emit('newMessage', messageWithId);
       app.io.emit('newMessage', messageWithId);
     });

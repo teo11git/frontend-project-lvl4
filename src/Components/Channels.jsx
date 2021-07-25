@@ -5,13 +5,32 @@ import {
   Nav,
   Dropdown,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 
-const switchChannel = (id) => () => {};
+import { useSelector, useDispatch } from 'react-redux';
+
+import { createNewChannel } from '../slices/channelsSlice.js';
+import { setModalShow, setModalType, setEditChannel } from '../slices/uiSlice.js'
+import { setCurrentChannelId } from '../slices/currentChannelIdSlice.js';
 
 const Channel = (props) => {
   const { id, name, removable } = props.channel;
   const isRemovable = removable === true;
+  const dispatch = useDispatch();
+
+  const switchChannel = (id) => () => {
+    dispatch(setCurrentChannelId({ id }));
+  };
+  const openRenameModal = () => {
+    dispatch(setEditChannel({ id }));
+    dispatch(setModalType({ type: 'renameChannel'}));
+    dispatch(setModalShow({ show: true }));
+  };
+  const openDeleteConfirmModal = () => {
+    dispatch(setEditChannel({ id }));
+    dispatch(setModalType({ type: 'deleteConfirmation' }));
+    dispatch(setModalShow({ show: true }));    
+  };
+
   return (
     <Nav.Item className="d-flex justify-content-between">
       <Button variant="pills" className="w-100 rounded-0 text-left" onClick={switchChannel(id)}>
@@ -28,8 +47,8 @@ const Channel = (props) => {
                 </svg>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="#">Change</Dropdown.Item>
-                <Dropdown.Item href="#">Delete</Dropdown.Item>
+                <Dropdown.Item href="#" onClick={openRenameModal}>Change</Dropdown.Item>
+                <Dropdown.Item href="#" onClick={openDeleteConfirmModal}>Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
         )
@@ -49,12 +68,20 @@ const ChannelBox = () => {
   );
 };
 
-const ChannelsHeader = () => (
-  <Container className="d-flex flex-row justify-content-between py-3 border-bottom">
-    <h4>Channels</h4>
-    <Button variant="outline-success" type="button">Add</Button>
-  </Container>
-);
+const ChannelsHeader = () => {
+  const dispatch = useDispatch();
+  const openModal = () => {
+    dispatch(setModalType({ type: 'channelNameInput' }));
+    dispatch(setModalShow({ show: true }));
+  };
+
+  return (
+    <Container className="d-flex flex-row justify-content-between py-3 border-bottom">
+      <h4>Channels</h4>
+      <Button variant="outline-success" type="button" onClick={openModal}>Add</Button>
+    </Container>
+  );
+};
 
 const Channels = () => (
   <>

@@ -15,25 +15,17 @@ const Message = ({ message }) => (
   {message.text}
   </div>
 );
-/*
-const InputMessage = () => (
-  <div className="mt-auto">
-    <Form className="d-flex ml-1">
-      <Form.Control type="text" placeholder="Your message" />
-      <Button type="submit" variant="dark">Send</Button>
-    </Form>
-  </div>
-);
-*/
-const MessageBox = () => {
-  const messages = useSelector((state) => state.messages);
-  console.log(messages);
+
+const MessageBox = (props) => {
+  const { messages } = props;
   return (
-    messages.map((message) => (
-      <div key={message.id} id="message-box" className="p-3 d-flex flex-column scroll-enabled">
-        <Message message={message}/>
-      </div>
-    ))
+		<div id="message-box" className="p-3 d-flex flex-column scroll-enabled">
+    	{
+				messages.map((message) => (
+					<Message key={message.id} message={message}/>
+    		))
+			}
+		</div>
   )
 };
 
@@ -47,18 +39,17 @@ const CurrentChannelHeader = ({ channel }) => (
 const CurrentChannel = () => {
   const { id: currentId } = useSelector((state) => state.currentChannelId);
   const currentChannel = useSelector((state) => state.channels)
-    .find((chan) => chan.id === currentId);
-  const messages = useSelector((state) => state.messages);
+    .find((ch) => ch.id === currentId);
+  const messages = useSelector((state) => state.messages)
+		.filter((message) => message.channelId === currentId);
   const messagesCount = messages.length;
   
-
-  //to do improve selectors??
   return (
     currentChannel
       ? (
         <>
           <CurrentChannelHeader channel={{name: currentChannel.name, messagesCount}} />
-          <MessageBox />
+          <MessageBox messages={messages}/>
           <InputMessage />
         </>
       )

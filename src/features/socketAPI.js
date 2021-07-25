@@ -1,30 +1,15 @@
 import { useContext, useState } from 'react';
 import APIContext from '../Contexts/APIContext.js';
 
-/*
- const message = {
-  id(added in server), autor, text, channelId
- } 
- */
 export const useApi = () => useContext(APIContext);
 
 const createApi = (io) => {
-    const sendNewMessage = (message) => {
-      return new Promise((resolve, rejected) => {
-        io.emit(
-          'newMessage',
-          message,
-          (res) => {
-            if (res.status === 'ok') resolve(res.data);
-          });
-      });
-    };
-  
-  const createNewChannel = () => {
+  const makeRequestWithSocket = (command, data) => {
+    console.log(`try to send ${command}`);
     return new Promise((resolve, rejected) => {
       io.emit(
-        'newChannel',
-        channel,
+        command,
+        data,
         (res) => {
           if (res.status === 'ok') resolve(res.data);
         }
@@ -32,34 +17,29 @@ const createApi = (io) => {
     });
   };
 
-  const renameChannel = () => {
-    return new Promise((resolve, rejected) => {
-      io.emit(
-        'renameChannel',
-        data /* id, newName */,
-        (res) => {
-          if (res.status === 'ok') resolve(res.data);
-        }
-      );
-    });
-  };
+  const sendNewMessage = (message) =>
+    makeRequestWithSocket('newMessage', message);
+  const createNewChannel = (channel) =>
+    makeRequestWithSocket('newChannel', channel);
+  const renameChannel = (channel) =>
+    makeRequestWithSocket('renameChannel', channel);
+  const removeChannel = (data) =>
+    makeRequestWithSocket('removeChannel', data);
 
-  const removeChannel = () => {
-    return new Promise(resolve, rejected) => {
-      io.emit(
-        'remiveChannel',
-        data /* id */,
-        (res) => {
-          if (res.status === 'ok') resolve(res.data);
-        }
-      )
-    }
+  return { 
+    sendNewMessage,
+    createNewChannel,
+    renameChannel,
+    removeChannel
   };
-
-  return { sendNewMessage };
 };
+
 
 export const implementApi = (io) => {
-  console.log('Start to create Api');
   return createApi(io);
 };
+
+// i want share this object
+export let myApi = {};
+
+export const initApi = (io) => myApi = createApi(io);

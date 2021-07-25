@@ -52,11 +52,12 @@ export default (app, defaultState = {}) => {
       };
       state.messages.push(messageWithId);
       acknowledge({ status: 'ok', data: messageWithId });
-      // app.io.emit('newMessage', messageWithId);
       app.io.emit('newMessage', messageWithId);
+      // socket.broadcast.emit('newMessage', messageWithId);
     });
 
     socket.on('newChannel', (channel, acknowledge = _.noop) => {
+      console.log('>>> Recieved NewChannel signal');
       const channelWithId = {
         ...channel,
         removable: true,
@@ -84,7 +85,7 @@ export default (app, defaultState = {}) => {
       if (!channel) return;
       channel.name = name;
 
-      acknowledge({ status: 'ok' });
+      acknowledge({ status: 'ok', data: channel });
       app.io.emit('renameChannel', channel);
     });
   });

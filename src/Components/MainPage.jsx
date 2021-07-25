@@ -8,6 +8,8 @@ import { setCurrentChannelId } from '../slices/currentChannelIdSlice.js';
 
 import MainNavbar from './MainNavbar.jsx';
 import Chat from './Chat.jsx';
+import allModals from './Modals/index.js';
+
 import paths from '../routes.js';
 
 const makeRequest = async (token, dispatch, setStatus) => {
@@ -28,6 +30,15 @@ const makeRequest = async (token, dispatch, setStatus) => {
     setStatus('failed');
   }
 };
+const Modals = () => {
+  const modalType = useSelector((state) => state.ui.modalType);
+  console.log('drow modal!');
+  return (
+    <>
+      {allModals[modalType]()}
+    </>
+  );
+};
 
 const MainPage = () => {
   console.log('Run chat');
@@ -43,6 +54,7 @@ const MainPage = () => {
     <div className="d-flex flex-column h-100">
       <MainNavbar />
       <Chat />
+      <Modals />
     </div>
   );
 };

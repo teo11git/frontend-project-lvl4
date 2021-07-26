@@ -27,12 +27,11 @@ export const channelsSlice = createSlice({
       console.log('add channel!');
       state = state.push(action.payload);
     },
-    renameChannel: (state, { payload }) => {
+    renameChannel: (state, { payload: channel }) => {
       console.log('rename channel!');
-      const channel =  payload.data;
       const { id } = channel;
-      const index = state.indexOf((ch) => ch.id === id);
-      state = state[index] = channel;
+      const index = state.findIndex((ch) => ch.id === id);
+      state[index] = channel;
     },
     deleteChannel: (state, { payload }) => {
       console.log('delete channel');

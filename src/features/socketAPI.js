@@ -30,7 +30,7 @@ const createApi = (io) => {
     sendNewMessage,
     createNewChannel,
     renameChannel,
-    removeChannel
+    removeChannel,
   };
 };
 

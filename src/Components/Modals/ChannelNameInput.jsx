@@ -9,13 +9,10 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { setModalShow } from '../../slices/uiSlice.js';
 import { useApi } from '../../features/socketAPI.js';
 
-const ChannelNameInputModal = () => {
+const ChannelNameInputModal = ({ existedNames }) => {
   const socketApi = useApi();
 	const dispatch = useDispatch();
-
-	const show = useSelector((state) => state.ui.modalShow);
-	const existedNames = useSelector((state) => state.channels)
-		.map((ch) => ch.name);
+  const { user } = useSelector((state) => state.authentification);
 
 	const schema = yup.object().shape({
 		name:
@@ -45,7 +42,7 @@ const ChannelNameInputModal = () => {
   };
  
 	const sendName = async (values, formik) => {
-		const channel = { name: values.name, removable: true }
+		const channel = { name: values.name, removable: true, autor: user }
     setFormikState('submitting', formik);
     try {
       await socketApi.createNewChannel(channel);
@@ -57,9 +54,6 @@ const ChannelNameInputModal = () => {
     }
 	};
 
-	const handleClose = () => {
-		dispatch(setModalShow({ show: false}));
-	}
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -75,11 +69,7 @@ const ChannelNameInputModal = () => {
 
   console.log('values is', values);
 	return (
-      <Modal
-        show={show}
-        onHide={handleClose}
-        keyboard={false}
-      >
+      <>
         <Modal.Header closeButton>
           <Modal.Title>Set channel name</Modal.Title>
         </Modal.Header>
@@ -106,10 +96,9 @@ const ChannelNameInputModal = () => {
 						</Form.Group>
 					</ Form>
         </Modal.Body>
-      </Modal>
+      </>
   );
 
 }
 
-export default ChannelNameInputModal
-;
+export default ChannelNameInputModal;

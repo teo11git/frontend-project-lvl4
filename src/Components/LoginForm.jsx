@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import { useHistory, useLocation, useRouteMatch, Link } from 'react-router-dom';
 import {
   Card, Form, Button, Alert,
@@ -11,8 +13,8 @@ import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
 
 const schema = yup.object().shape({
-  username: yup.string().required('No name provided'),
-  password: yup.string().required('No password provided'),
+  username: yup.string().required('required'),
+  password: yup.string().required('required'),
 });
 
 const LoginForm = () => {
@@ -20,6 +22,13 @@ const LoginForm = () => {
   const location = useLocation();
   const history = useHistory();
   const { url, path } = useRouteMatch();
+  const [t, i18n] = useTranslation();
+
+  const changeLanguage = () => {
+    i18n.language === 'ru'
+      ? i18n.changeLanguage('en')
+      : i18n.changeLanguage('ru');
+  };
 
   const makeRedirect = (to, history) => history.replace(to);
 
@@ -46,18 +55,20 @@ const LoginForm = () => {
     validationSchema: schema,
   });
   const {
-    handleSubmit, handleChange, values, touched, errors,
+    handleSubmit, handleChange, values, touched, errors, status
   } = formik;
   return (
+    <>
+    <Button variant="link" className="float-right mr-2 my-0" onClick={changeLanguage}>{t('changeLang')}</Button>
     <Card className="mx-auto mt-3" style={{ width: '20rem' }}>
-      <Card.Header><h4>Log in</h4></Card.Header>
+      <Card.Header><h4>{t('auth.login')}</h4></Card.Header>
       <Card.Body>
         <Form
           onSubmit={handleSubmit}
           noValidate
         >
           <Form.Group controlId="formBasicName">
-            <Form.Label>User name</Form.Label>
+            <Form.Label>{t('auth.userName')}</Form.Label>
             <Form.Control
               type="text"
               name="username"
@@ -65,13 +76,14 @@ const LoginForm = () => {
               values={values.username}
               isValid={touched.username && !errors.username}
               isInvalid={!!errors.username}
-              placeholder="Enter name"
+              placeholder={t('auth.enterName')}
+              autoFocus
             />
-            <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t(`validationErrors.${errors.username}`)}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>{t('auth.password')}</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -79,32 +91,31 @@ const LoginForm = () => {
               onChange={handleChange}
               isValid={touched.password && !errors.password}
               isInvalid={!!errors.password}
-              placeholder="Password"
+              placeholder={t('auth.enterPassword')}
             />
-            <Form.Control.Feedback
-              type="invalid"
-            >
-              {errors.password}
+            <Form.Control.Feedback type="invalid">
+              {t(`validationErrors.${errors.password}`)}
             </Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-between">
           <Button  variant="primary" type="submit">
-            Submit
+            {t('auth.submit')}
           </Button>
-        <Link to="/signup">or sign up</Link>
+        <Link to="/signup">{t('auth.orSignup')}</Link>
           </div>
         </Form>
       </Card.Body>
-      {formik.status === 'Auth error'
+      {status === 'Auth error'
         ? (
           <Card.Footer>
             <Alert variant="danger" className="text-center">
-              Cannot found username or password!
+              Incorrect name or(and) password
             </Alert>
           </Card.Footer>
         )
         : null}
     </Card>
+    </>
   );
 };
 

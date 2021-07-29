@@ -2,12 +2,23 @@ import React from 'react';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useApi } from '../features/socketApi.js';
 import { useAuth } from '../features/authorization.js';
 import { sendNewMessage } from '../slices/messagesSlice.js';
+
+yup.setLocale({
+  mixed: {
+    required: () => ({ key: 'required' }),
+  },
+  string: {
+    max: ({ max }) => ({ key: 'charMax', value: max }),
+  }
+});
 
 const schema = yup.object().shape({
   message:
@@ -19,6 +30,7 @@ const schema = yup.object().shape({
 });
 
 const InputMessage = () => {
+  const [t] = useTranslation();
   const socketApi = useApi();
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.currentChannelId);
@@ -67,7 +79,6 @@ const InputMessage = () => {
     handleSubmit, handleChange, values, touched, errors, isSubmitting
   } = formik;
 
-  console.log(values);
   return (
     <div className="mt-auto">
       <Form
@@ -78,7 +89,7 @@ const InputMessage = () => {
         <Form.Control
           type="text"
           name="message"
-          placeholder="Your message"
+          placeholder={t('controls.enterMessage')}
           onChange={handleChange}
           value={"" || values.message}
           isValid={touched.username && !errors.message}
@@ -86,11 +97,11 @@ const InputMessage = () => {
           readOnly={isSubmitting}
           className="col-10"
         />
-        <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-1">Send</Button>
+        <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-1">{t('controls.sendMessage')}</Button>
         <Form.Control.Feedback
           className="col-9"
           type="invalid">
-          {errors.message}
+          {t(`validationErrors.${errors?.message?.key}`, { n: errors?.message?.value })}
         </Form.Control.Feedback>
       </Form>
     </div>

@@ -5,27 +5,46 @@ import {
   Card, Form, Button, Alert,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import paths from '../routes.js';
 
+import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
+
+yup.setLocale({
+  mixed: {
+    required: () => ({ key: 'required' }),
+    oneOf: () => ({ key: 'must_match' }),
+  }, 
+  string: {
+    min: ({ min }) => ({ key: 'charMin', value: min }),
+    max: ({ max }) => ({ key: 'charMax', value: max }),
+  },
+});
 
 const schema = yup.object().shape({
   username: 
     yup
       .string()
-      .required('No name provided')
+      .required()
       .min(3)
       .max(20),
-  password: yup.string().required('No password provided').min(6),
-  passwordConfirm: yup.string().required('Please repeat password')
-       .oneOf([yup.ref('password'), null], 'Passwords must match'),
+  password: yup.string().required().min(6),
+  passwordConfirm: yup.string().required()
+       .oneOf([yup.ref('password'), null]),
 });
 
 const SignupForm = () => {
   const auth = useAuth();
   const location = useLocation();
   const history = useHistory();
+  const [t, i18n] = useTranslation();
+
+  const changeLanguage = () => {
+    i18n.language === 'ru'
+      ? i18n.changeLanguage('en')
+      : i18n.changeLanguage('ru');
+  };
 
   const makeRedirect = (to, history) => history.replace(to);
 
@@ -38,7 +57,7 @@ const SignupForm = () => {
     };
     const onError = (err) => {
       if (err === 'Conflict') {
-        formik.setFieldError('username', 'Sorry, name already in use');
+        formik.setFieldError('username', { key: 'already_in_use' });
       }
       console.log(err)
     };
@@ -61,15 +80,17 @@ const SignupForm = () => {
     handleSubmit, handleChange, values, touched, errors,
   } = formik;
   return (
+    <>
+    <Button variant="link" className="float-right mr-2 my-0" onClick={changeLanguage}>{t('changeLang')}</Button>
     <Card className="mx-auto" style={{ width: '20rem' }}>
-    <Card.Header><h4>Sign in</h4></Card.Header>
+    <Card.Header><h4>{t('auth.signup')}</h4></Card.Header>
       <Card.Body>
         <Form
           onSubmit={handleSubmit}
           noValidate
         >
           <Form.Group controlId="formBasicName">
-            <Form.Label>User name</Form.Label>
+            <Form.Label>{t('auth.userName')}</Form.Label>
             <Form.Control
               type="text"
               name="username"
@@ -77,13 +98,16 @@ const SignupForm = () => {
               values={values.username}
               isValid={touched.username && !errors.username}
               isInvalid={!!errors.username}
-              placeholder="Enter name"
+              placeholder={t('auth.enterName')}
+              autoFocus
             />
-            <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t(`validationErrors.${errors?.username?.key}`, { n: errors?.username?.value})}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>{t('auth.password')}</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -91,16 +115,15 @@ const SignupForm = () => {
               onChange={handleChange}
               isValid={touched.password && !errors.password}
               isInvalid={!!errors.password}
-              placeholder="enter password"
+              placeholder={t('auth.enterPassword')}
             />
-            <Form.Control.Feedback
-              type="invalid"
-            >
-              {errors.password}
+            <Form.Control.Feedback type="invalid">
+              {console.log(errors?.password?.key)}
+              {t(`validationErrors.${errors?.password?.key}`, { n: errors?.password?.value})}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formBasicPasswordConf">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>{t('auth.passwordConfirm')}</Form.Label>
             <Form.Control
               type="password"
               name="passwordConfirm"
@@ -108,16 +131,14 @@ const SignupForm = () => {
               onChange={handleChange}
               isValid={touched.passwordConfirm && !errors.passwordConfirm}
               isInvalid={!!errors.passwordConfirm}
-              placeholder="repeat password"
+              placeholder={t('auth.repeatPassword')}
             />
-            <Form.Control.Feedback
-              type="invalid"
-            >
-              {errors.passwordConfirm}
+            <Form.Control.Feedback type="invalid">
+              {t(`validationErrors.${errors?.passwordConfirm?.key}`, { n: errors?.passwordConfirm?.value})}
             </Form.Control.Feedback>
           </Form.Group>
           <Button variant="primary" type="submit">
-            Submit
+            {t('auth.submit')}
           </Button>
         </Form>
       </Card.Body>
@@ -131,6 +152,7 @@ const SignupForm = () => {
         )
         : null}
     </Card>
+    </>
   );
 };
 

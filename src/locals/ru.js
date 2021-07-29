@@ -1,0 +1,40 @@
+export default {
+  translation: {
+    changeLang: 'English',
+    auth: {
+      login: 'Вход',
+      signup: 'Регистрация',
+      userName: 'Имя пользователя',
+      enterName: 'ваше имя',
+      password: 'Пароль',
+      enterPassword: 'укажите пароль',
+      passwordConfirm: 'Подтвердите пароль',
+      repeatPassword: 'повторите пароль',
+      submit: 'Отправить',
+      orSignup: 'нет аккаунта?',
+    },
+    controls: {
+      addChannel: 'Создать',
+      changeChannel: 'Изменить',
+      deleteChannel: 'Удалить',
+      sendMessage: 'Отправить',
+      enterMessage: 'Ваше сообщение',
+      logout: 'Выход',
+      colorTheme: 'Тема',
+      lang: 'en',
+    },
+    validationErrors: {
+      required: 'Обязательно для заполнения',
+      charMin: 'Должно быть не менее {{n}} символов',
+      charMax: 'Должно быть не более {{n}} символов',
+      'must_mutch': 'Пароли должны совпадать',
+      'already_in_use': 'Извините, имя занято',
+    },
+    headers: {
+      channels: 'Каналы',
+      message_0: '{{count}} Сообщение',
+      message_1: '{{count}} Сообщения',
+      message_2: '{{count}} Сообщений',
+    },
+  },
+};

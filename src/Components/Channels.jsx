@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { createNewChannel } from '../slices/channelsSlice.js';
 import { setModalShow, setModalType, setEditChannel } from '../slices/uiSlice.js'
@@ -16,15 +17,18 @@ const Channel = (props) => {
   const { id, name, removable } = props.channel;
   const isRemovable = removable === true;
   const dispatch = useDispatch();
+  const [t] = useTranslation();
 
   const switchChannel = (id) => () => {
     dispatch(setCurrentChannelId({ id }));
   };
+
   const openRenameModal = () => {
     dispatch(setEditChannel({ id }));
     dispatch(setModalType({ type: 'renameChannel'}));
     dispatch(setModalShow({ show: true }));
   };
+
   const openDeleteConfirmModal = () => {
     dispatch(setEditChannel({ id }));
     dispatch(setModalType({ type: 'deleteConfirmation' }));
@@ -47,8 +51,8 @@ const Channel = (props) => {
                 </svg>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="#" onClick={openRenameModal}>Change</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={openDeleteConfirmModal}>Delete</Dropdown.Item>
+                <Dropdown.Item href="#" onClick={openRenameModal}>{t('controls.changeChannel')}</Dropdown.Item>
+                <Dropdown.Item href="#" onClick={openDeleteConfirmModal}>{t('controls.deleteChannel')}</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
         )
@@ -60,7 +64,6 @@ const Channel = (props) => {
 
 const ChannelBox = () => {
   const channels = useSelector((state) => state.channels);
-  // console.log(channels);
   return (
     <Nav variant="tabs" className="flex-column flex-nowrap mt-1 pt-1 px-2 scroll-enabled">
       {channels.map((channel) => <Channel key={channel.id} channel={channel}/>)}
@@ -69,6 +72,7 @@ const ChannelBox = () => {
 };
 
 const ChannelsHeader = () => {
+  const [t] = useTranslation();
   const dispatch = useDispatch();
   const openModal = () => {
     dispatch(setModalType({ type: 'channelNameInput' }));
@@ -77,8 +81,8 @@ const ChannelsHeader = () => {
 
   return (
     <Container className="d-flex flex-row justify-content-between py-3 border-bottom">
-      <h4>Channels</h4>
-      <Button variant="outline-success" type="button" onClick={openModal}>Add</Button>
+      <h4>{t('headers.channels')}</h4>
+      <Button variant="outline-success" type="button" onClick={openModal}>{t('controls.addChannel')}</Button>
     </Container>
   );
 };

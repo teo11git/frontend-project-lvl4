@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider, useDispatch } from 'react-redux';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import i18next from 'i18next';
+import socketIO from 'socket.io-client';
+
+import resources from './locals';
 import App from './Components/App.jsx';
 import { store } from './store.js';
 import { addMessage } from './slices/messagesSlice.js';
@@ -9,11 +14,19 @@ import { addChannel, renameChannel, deleteChannel } from './slices/channelsSlice
 import { setCurrentUser } from './slices/authentificationSlice.js';
 import { setCurrentChannelId } from './slices/currentChannelIdSlice.js'
 
-import socketIO from 'socket.io-client';
 import APIContext from './Contexts/APIContext.js';
 import { implementApi, useApi, socketApi, initApi } from './features/socketAPI.js';
 
 export default () => {
+  const i18n = i18next.createInstance();
+
+  i18n
+    .use(initReactI18next)
+    .init({
+      lng: 'ru',
+      debug: true,
+      resources,
+    });
 
   const container = document.getElementById('chat');
 
@@ -62,9 +75,11 @@ export default () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <APIContext.Provider value={api}>
-        <App />
-      </APIContext.Provider>
+      <I18nextProvider i18n={i18n}>
+        <APIContext.Provider value={api}>
+          <App />
+        </APIContext.Provider>
+      </I18nextProvider>
     </Provider>,
     container,
   );

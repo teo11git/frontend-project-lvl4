@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 
 import { useSelector, useStore } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import InputMessage from './InputMessage.jsx';
 
@@ -29,12 +30,16 @@ const MessageBox = (props) => {
   )
 };
 
-const CurrentChannelHeader = ({ channel }) => (
-  <Container className="py-3 border-bottom">
-    <h4>{channel.name}</h4>
-    <span className="text-mytted">{channel.messagesCount} messages</span>
-  </Container>
-);
+const CurrentChannelHeader = ({ channel }) => {
+  const [t] = useTranslation();
+
+  return (
+    <Container className="py-3 border-bottom">
+      <h4>{channel.name}</h4>
+      <span className="text-mytted">{t('headers.message', { count: channel.messagesCount})}</span>
+    </Container>
+  );
+};
 
 const CurrentChannel = () => {
   const { id: currentId } = useSelector((state) => state.currentChannelId);

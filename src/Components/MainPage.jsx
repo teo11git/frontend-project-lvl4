@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 
-import { addChannel } from '../slices/channelsSlice.js';
-import { addMessage } from '../slices/messagesSlice';
+import { synchronizeChannels } from '../slices/channelsSlice.js';
+import { synchronizeMessages } from '../slices/messagesSlice';
 import { setCurrentChannelId } from '../slices/currentChannelIdSlice.js';
 import { setModalShow } from '../slices/uiSlice.js';
 
@@ -14,7 +14,7 @@ import allModals from './Modals/index.js';
 
 import paths from '../routes.js';
 
-const makeRequest = async (token, dispatch, setStatus) => {
+const synchronizeWithServer = async (token, dispatch, setStatus) => {
   try {
     setStatus('gettingData');
     const responce = await axios.get('/api/v1/data',
@@ -23,12 +23,11 @@ const makeRequest = async (token, dispatch, setStatus) => {
       });
     setStatus('success');
     const { channels, messages, currentChannelId } = responce.data;
-    console.log('Data is...');
-    console.log(channels, messages, currentChannelId);
-    channels.forEach((channel) => dispatch(addChannel(channel)));
+    dispatch(synchronizeChannels({ channels }));
+    dispatch(synchronizeMessages({ messages }));
     dispatch(setCurrentChannelId({ id: currentChannelId }));
-    messages.forEach((message) => dispatch(addMessage(message)));
   } catch (e) {
+    console.log(e);
     setStatus('failed');
   }
 };
@@ -76,7 +75,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   useEffect(() => {
-    makeRequest(token, dispatch, setStatus);
+    synchronizeWithServer(token, dispatch, setStatus);
   }, []);
 
   return (

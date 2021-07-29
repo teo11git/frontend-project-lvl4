@@ -91,7 +91,7 @@ const LoginForm = () => {
           <Button  variant="primary" type="submit">
             Submit
           </Button>
-        <Link to="/signup">or signin</Link>
+        <Link to="/signup">or sign up</Link>
           </div>
         </Form>
       </Card.Body>

@@ -23,6 +23,9 @@ export const channelsSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
+    synchronizeChannels: (state, { payload }) => {
+      return payload.channels;
+    },
     addChannel: (state, action) => {
       console.log('add channel!');
       state = state.push(action.payload);
@@ -49,6 +52,7 @@ export const channelsSlice = createSlice({
 
 console.log(channelsSlice.actions);
 
-export const { addChannel, renameChannel, deleteChannel } = channelsSlice.actions;
+export const { addChannel, renameChannel, deleteChannel, synchronizeChannels
+} = channelsSlice.actions;
 
 export default channelsSlice.reducer;

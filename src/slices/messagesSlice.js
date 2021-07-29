@@ -15,8 +15,11 @@ export const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
+    synchronizeMessages: (state, { payload }) => {
+      return payload.messages;
+    },
     addMessage: (state, action) => {
-      state = state.push(action.payload);
+      state.push(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -27,6 +30,6 @@ export const messagesSlice = createSlice({
 
 });
 
-export const { addMessage } = messagesSlice.actions;
+export const { addMessage, synchronizeMessages } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

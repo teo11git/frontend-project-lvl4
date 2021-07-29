@@ -11,8 +11,13 @@ import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
 
 const schema = yup.object().shape({
-  username: yup.string().required('No name provided'),
-  password: yup.string().required('No password provided'),
+  username: 
+    yup
+      .string()
+      .required('No name provided')
+      .min(3)
+      .max(20),
+  password: yup.string().required('No password provided').min(6),
   passwordConfirm: yup.string().required('Please repeat password')
        .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
@@ -32,7 +37,10 @@ const SignupForm = () => {
       makeRedirect(paths.mainPagePath(), history);
     };
     const onError = (err) => {
-      formik.setStatus('Auth error');
+      if (err === 'Conflict') {
+        formik.setFieldError('username', 'Sorry, name already in use');
+      }
+      console.log(err)
     };
     auth.signup(values, onSuccess, onError);
   };

@@ -47,8 +47,9 @@ const makeAuth = {
         cb(username);
         makeAuth.isAuthenticated = true;
       }).catch((err) => {
-        console.log(err);
-        errCb(err);
+        if (err.message.includes('409')) {
+          errCb('Conflict');
+        }
       });
   },
 };

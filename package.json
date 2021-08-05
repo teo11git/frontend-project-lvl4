@@ -1,8 +1,8 @@
 {
-  "name": "frontend_l4_chat_project",
+  "name": "@hexlet/code",
   "version": "0.0.1",
   "description": "",
-  "main": "server/index.js",
+  "main": "src/init.jsx",
   "type": "module",
   "engines": {
     "node": "13.x 14.x"
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Fedor Golovnin",
   "license": "ISC",
   "homepage": "",
   "dependencies": {

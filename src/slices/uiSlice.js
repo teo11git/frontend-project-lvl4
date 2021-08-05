@@ -12,11 +12,9 @@ export const uiSlice = createSlice({
   initialState,
   reducers: {
     setModalShow: (state, { payload }) => {
-      console.log('SHOW MODAL');
       state.modalShow = payload.show;
     },
     setModalType: (state, { payload }) => {
-      console.log(`set modal type ${payload.type}`);
       state.modalType = payload.type;
     },
     setEditChannel: (state, { payload }) => {

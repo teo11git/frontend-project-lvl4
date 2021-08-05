@@ -4,16 +4,19 @@ import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
-// import { Provider } from 'react-redux';
-// import App from './Components/App.jsx';
-// import { store } from './store.js';
+import ReactDom from 'react-dom';
+import socketIO from 'socket.io-client';
 
 import init from './init.jsx';
 
-if (process.env.NODE_ENV !== 'production') {
-  localStorage.debug = 'chat:*';
-}
-init();
+const runApp = async () => {
+  if (process.env.NODE_ENV !== 'production') {
+    localStorage.debug = 'chat:*';
+  }
+  const socket = socketIO();
+  const virtualDom = await init(socket);
+  const element = document.getElementById('chat');
+  ReactDom.render(virtualDom, element);
+};
+
+runApp();

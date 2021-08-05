@@ -48,7 +48,6 @@ const ChannelNameInputModal = ({ existedNames }) => {
     const channel = { name: values.name, removable: true, autor: user };
     setFormikState('submitting', formik);
     try {
-      console.log('successfully sended!');
       await socketApi.createNewChannel(channel);
       await setFormikState('success', formik);
       await dispatch(setModalShow({ show: false }));
@@ -74,7 +73,6 @@ const ChannelNameInputModal = ({ existedNames }) => {
     handleSubmit, handleChange, values, touched, errors, isSubmitting,
   } = formik;
 
-  console.log('Modal mounted!');
   return (
     <>
       <Modal.Header closeButton>

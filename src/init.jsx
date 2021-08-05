@@ -1,11 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
 import * as Rollbar from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
-import socketIO from 'socket.io-client';
 
 import resources from './locals';
 import App from './Components/App.jsx';
@@ -18,12 +16,13 @@ import { setCurrentChannelId } from './slices/currentChannelIdSlice.js';
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
-export default () => {
+export default (socket) => {
   const rollbarConfig = {
     accessToken: '32f20a07361646a5a260bea7c1d43761',
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
+
   const i18n = i18next.createInstance();
 
   i18n
@@ -34,7 +33,7 @@ export default () => {
       resources,
     });
 
-  const container = document.getElementById('chat');
+  // const container = document.getElementById('chat');
 
   const currentUser = localStorage.getItem('username');
   const isUserExists = () => currentUser !== undefined;
@@ -42,42 +41,34 @@ export default () => {
     store.dispatch(setCurrentUser({ user: currentUser }));
   }
 
-  const io = socketIO();
+  socket.onAny((e) => console.log(`SOCKET IO RECIEVED ${e}`));
 
-  io.onAny((e) => console.log(`SOCKET IO RECIEVED ${e}`));
-
-  io.on('newMessage', (messageWithId) => {
+  socket.on('newMessage', (messageWithId) => {
     store.dispatch(addMessage(messageWithId));
   });
 
-  io.on('newChannel', (channelWithId) => {
+  socket.on('newChannel', (channelWithId) => {
     store.dispatch(addChannel(channelWithId));
-    console.log(currentUser, channelWithId.autor);
     if (currentUser === channelWithId.autor) {
-      console.log('i am a autor!');
       store.dispatch(setCurrentChannelId({ id: channelWithId.id }));
     }
   });
 
-  io.on('renameChannel', (channel) => {
+  socket.on('renameChannel', (channel) => {
     store.dispatch(renameChannel(channel));
   });
 
-  io.on('removeChannel', (dataWithId) => {
+  socket.on('removeChannel', (dataWithId) => {
     store.dispatch(deleteChannel(dataWithId));
     const currentChannelId = store.getState().currentChannelId.id;
-    console.log(dataWithId);
     if (currentChannelId === dataWithId.id) {
       store.dispatch(setCurrentChannelId({ id: 1 }));
     }
   });
 
-  const api = implementApi(io);
-  // socketApi = implementApi(io);
-  // initApi(io);
-  //
+  const api = implementApi(socket);
 
-  ReactDOM.render(
+  return (
     <Rollbar.Provider config={rollbarConfig}>
       <Rollbar.ErrorBoundary>
         <Provider store={store}>
@@ -87,9 +78,7 @@ export default () => {
             </APIContext.Provider>
           </I18nextProvider>
         </Provider>
-        ,
       </Rollbar.ErrorBoundary>
-    </Rollbar.Provider>,
-    container,
+    </Rollbar.Provider>
   );
 };

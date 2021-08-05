@@ -50,9 +50,7 @@ const SignupForm = () => {
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const sendForm = (values, formik) => {
-    console.log(values);
     const onSuccess = () => {
-      console.log('Success');
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPagePath(), history);
     };
@@ -119,7 +117,6 @@ const SignupForm = () => {
                 placeholder={t('auth.enterPassword')}
               />
               <Form.Control.Feedback type="invalid">
-                {console.log(errors?.password?.key)}
                 {t(`validationErrors.${errors?.password?.key}`, { n: errors?.password?.value })}
               </Form.Control.Feedback>
             </Form.Group>

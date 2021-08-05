@@ -4,9 +4,8 @@ import APIContext from '../Contexts/APIContext.js';
 export const useApi = () => useContext(APIContext);
 
 const createApi = (io) => {
-  const makeRequestWithSocket = (command, data) => {
-    console.log(`try to send ${command}`);
-    return new Promise((resolve, rejected) => {
+  const makeRequestWithSocket = (command, data) => (
+    new Promise((resolve, rejected) => {
       const timerId = setTimeout(() => rejected(new Error('connection_lost')), 3000);
       io.emit(
         command,
@@ -18,8 +17,7 @@ const createApi = (io) => {
           }
         },
       );
-    });
-  };
+    }));
 
   const sendNewMessage = (message) => makeRequestWithSocket('newMessage', message);
   const createNewChannel = (channel) => makeRequestWithSocket('newChannel', channel);

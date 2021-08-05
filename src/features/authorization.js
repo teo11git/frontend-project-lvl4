@@ -23,7 +23,6 @@ const makeAuth = {
         cb(username);
         makeAuth.isAuthenticated = true;
       }).catch((err) => {
-        console.log('Error');
         console.log(err);
         errCb(err);
       });

@@ -37,19 +37,14 @@ const Modals = () => {
     .map((ch) => ch.name);
   const editChannelId = useSelector(({ ui }) => ui.editChannelId);
 
-  console.log(editChannelId);
-
   const neededChannel = useSelector(({ channels }) => channels)
     .find((ch) => ch.id === editChannelId);
-
-  console.log(neededChannel);
 
   const handleClose = () => {
     dispatch(setModalShow({ show: false }));
   };
 
   const CurrentModal = allModals[modalType];
-  console.log('drow modal!');
   return (
     <Modal
       show={modalShow}
@@ -65,7 +60,6 @@ const Modals = () => {
 };
 
 const MainPage = () => {
-  console.log('Run chat');
   const [, setStatus] = useState('noActivity');
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');

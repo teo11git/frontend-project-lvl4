@@ -24,17 +24,14 @@ export const channelsSlice = createSlice({
   reducers: {
     synchronizeChannels: (state, { payload }) => payload.channels,
     addChannel: (state, action) => {
-      console.log('add channel!');
       state.push(action.payload);
     },
     renameChannel: (state, { payload: channel }) => {
-      console.log('rename channel!');
       const { id } = channel;
       const index = state.findIndex((ch) => ch.id === id);
       state[index] = channel;
     },
     deleteChannel: (state, { payload }) => {
-      console.log('delete channel');
       const index = payload.id;
       _.remove(state, (ch) => ch.id === index);
     },
@@ -48,8 +45,6 @@ export const channelsSlice = createSlice({
   },
   */
 });
-
-console.log(channelsSlice.actions);
 
 export const {
   addChannel, renameChannel, deleteChannel, synchronizeChannels,

@@ -9,7 +9,7 @@ import socketIO from 'socket.io-client';
 
 import resources from './locals';
 import App from './Components/App.jsx';
-import { store } from './store.js';
+import store from './store.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, renameChannel, deleteChannel } from './slices/channelsSlice.js';
 import { setCurrentUser } from './slices/authentificationSlice.js';

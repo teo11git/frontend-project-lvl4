@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 import _ from 'lodash';
@@ -24,7 +25,7 @@ export const channelsSlice = createSlice({
     synchronizeChannels: (state, { payload }) => payload.channels,
     addChannel: (state, action) => {
       console.log('add channel!');
-      state = state.push(action.payload);
+      state.push(action.payload);
     },
     renameChannel: (state, { payload: channel }) => {
       console.log('rename channel!');

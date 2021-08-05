@@ -23,11 +23,13 @@ const LoginForm = () => {
   const history = useHistory();
   const [t, i18n] = useTranslation();
 
+  /* eslint-disable no-unused-expressions */
   const changeLanguage = () => {
     i18n.language === 'ru'
       ? i18n.changeLanguage('en')
       : i18n.changeLanguage('ru');
   };
+  /* eslint-enable no-unused-expressions */
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../Contexts/AuthContext.js';
 import { setCurrentUser } from '../slices/authentificationSlice.js';
-import { store } from '../store.js';
+import store from '../store.js';
 
 export const useAuth = () => useContext(AuthContext);
 

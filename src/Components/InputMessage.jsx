@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useApi } from '../features/socketApi.js';
+import { useApi } from '../features/socketAPI.js';
 
 yup.setLocale({
   mixed: {

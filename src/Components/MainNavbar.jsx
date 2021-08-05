@@ -10,16 +10,18 @@ const MainNavbar = () => {
   const auth = useAuth();
   const [t, i18n] = useTranslation();
 
+  /* eslint-disable no-unused-expressions */
   const changeLang = () => {
     i18n.language === 'ru'
       ? i18n.changeLanguage('en')
       : i18n.changeLanguage('ru');
   };
+  /* eslint-enable no-unused-expressions */
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const redirectToMain = () => {
-    makeRedirect('./', history);
+    // makeRedirect('./', history);
   };
 
   const logOut = () => {
@@ -33,7 +35,7 @@ const MainNavbar = () => {
   return (
     <Navbar expand="lg" bg="dark" variant="dark">
       <Container>
-        <h1><a className="text-light" href="#" onClick={redirectToMain}>Hexlet Chat</a></h1>
+        <h1><a className="text-light" href="/" onClick={redirectToMain}>Hexlet Chat</a></h1>
         <div>
           <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
           <Button type="button" variant="link" className="text-light" onClick={changeLang}>{t('controls.lang')}</Button>

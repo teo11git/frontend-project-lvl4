@@ -6,7 +6,7 @@ import currentChannelIdReducer from './slices/currentChannelIdSlice.js';
 import authentificationReducer from './slices/authentificationSlice.js';
 import uiSliceReducer from './slices/uiSlice.js';
 
-export const store = configureStore({
+export default configureStore({
   reducer: {
     channels: channelsReducer,
     messages: messagesReducer,

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Modal, Button } from 'react-bootstrap';
 
-//import { useDispatch } from 'react-redux';
 import { useApi } from '../../features/socketAPI.js';
 
 const DeleteConfirmation = ({ channel, closeModal }) => {

@@ -26,9 +26,8 @@ export default function App() {
     return result;
   };
 
-  const PrivateRoute = ({ children, ...rest }) => (
+  const PrivateRoute = ({ children }) => (
     <Route
-      {...rest}
       render={() => (localStorage.getItem('token')
         ? (children)
         : (

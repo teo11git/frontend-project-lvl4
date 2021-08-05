@@ -12,8 +12,6 @@ import MainNavbar from './MainNavbar.jsx';
 import Chat from './Chat.jsx';
 import allModals from './Modals/index.js';
 
-import paths from '../routes.js';
-
 const synchronizeWithServer = async (token, dispatch, setStatus) => {
   try {
     setStatus('gettingData');
@@ -47,7 +45,7 @@ const Modals = () => {
   console.log(neededChannel);
 
   const handleClose = () => {
-    dispatch(setModalShow({ show: false}));
+    dispatch(setModalShow({ show: false }));
   };
 
   const CurrentModal = allModals[modalType];
@@ -56,22 +54,19 @@ const Modals = () => {
     <Modal
       show={modalShow}
       onHide={handleClose}
-    > 
-      {
-        <CurrentModal
-          channel={neededChannel}
-          existedNames={existedNames}
-          closeModal={handleClose}
-        />
-      } 
-    </ Modal>
+    >
+      <CurrentModal
+        channel={neededChannel}
+        existedNames={existedNames}
+        closeModal={handleClose}
+      />
+    </Modal>
   );
 };
 
 const MainPage = () => {
   console.log('Run chat');
-  const [fetchingDataStatus, setStatus] = useState('noActivity');
-  const channels = useSelector((state) => state.channels);
+  const [, setStatus] = useState('noActivity');
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   useEffect(() => {

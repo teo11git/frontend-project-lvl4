@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   modalShow: false,
   modalType: 'channelNameInput',
-  editChannelId: null
+  editChannelId: null,
 };
 
 export const uiSlice = createSlice({
@@ -11,13 +11,13 @@ export const uiSlice = createSlice({
   initialState,
   reducers: {
     setModalShow: (state, { payload }) => {
-			console.log('SHOW MODAL');
+      console.log('SHOW MODAL');
       state.modalShow = payload.show;
     },
-		setModalType: (state, { payload }) => {
+    setModalType: (state, { payload }) => {
       console.log(`set modal type ${payload.type}`);
-			state.modalType = payload.type;
-		},
+      state.modalType = payload.type;
+    },
     setEditChannel: (state, { payload }) => {
       state.editChannelId = payload.id;
     },

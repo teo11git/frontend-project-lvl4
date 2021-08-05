@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import * as yup from 'yup';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,21 +13,22 @@ import { useApi } from '../../features/socketAPI.js';
 
 const ChannelNameInputModal = ({ existedNames }) => {
   const socketApi = useApi();
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authentification);
+  const [t] = useTranslation();
 
-	const schema = yup.object().shape({
-		name:
-			yup
-				.string()
-				.required()
-				.trim()
-				.lowercase()
-				.max(30)
-				.notOneOf(existedNames)
-	});
+  const schema = yup.object().shape({
+    name:
+      yup
+        .string()
+        .required()
+        .trim()
+        .lowercase()
+        .max(30)
+        .notOneOf(existedNames),
+  });
   const setFormikState = (state, formik) => {
-    switch(state) {
+    switch (state) {
       case 'submitting':
         formik.setSubmitting(true);
         break;
@@ -40,65 +43,75 @@ const ChannelNameInputModal = ({ existedNames }) => {
         // do nothing
     }
   };
- 
-	const sendName = async (values, formik) => {
-		const channel = { name: values.name, removable: true, autor: user }
+
+  const sendName = async (values, formik) => {
+    const channel = { name: values.name, removable: true, autor: user };
     setFormikState('submitting', formik);
     try {
+      console.log('successfully sended!');
       await socketApi.createNewChannel(channel);
       await setFormikState('success', formik);
-      dispatch(setModalShow({ show: false }));
-    } catch(e) {
-      console.log(e);
+      await dispatch(setModalShow({ show: false }));
+    } catch (err) {
+      console.log(err);
+      formik.setFieldError('name', { key: err });
       setFormikState('failed', formik);
     }
-	};
+  };
 
-	const formik = useFormik({
-		initialValues: {
-			name: '',
+  const formik = useFormik({
+    initialValues: {
+      name: '',
     },
-		handleSubmit: (e) => e.preventDefault(),
-		onSubmit: sendName,
-		validationSchema: schema,
-		validateOnChange: false,
-		validateOnBlur: false,
-	});
+    handleSubmit: (e) => e.preventDefault(),
+    onSubmit: sendName,
+    validationSchema: schema,
+    validateOnChange: false,
+    validateOnBlur: false,
+  });
 
-	const { handleSubmit, handleChange, values, touched, errors } = formik;
+  const {
+    handleSubmit, handleChange, values, touched, errors, isSubmitting,
+  } = formik;
 
-  console.log('values is', values);
-	return (
-      <>
-        <Modal.Header closeButton>
-          <Modal.Title>Set channel name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-      		<Form
-        		onSubmit={handleSubmit}
-        		noValidate
-					>
-						<Form.Group className="row mx-1">
-        			<Form.Control
-								className="col-10"
-          			type="text"
-          			name="name"
-          			placeholder="Channel name"
-          			onChange={handleChange}
-          			value={values.name}
-          			isValid={touched.name && !errors.name}
-          			isInvalid={!!errors.name}
-        			/>
-        			<Button type="submit" variant="dark" className="ml-auto">
-                Send
-              </Button>
-							<Form.Control.Feedback type="invalid" className="col-9">{errors.name}</Form.Control.Feedback>
-						</Form.Group>
-					</ Form>
-        </Modal.Body>
-      </>
+  console.log('Modal mounted!');
+  return (
+    <>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('modals.createChannel')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <Form.Group className="row mx-1">
+            <Form.Control
+              className="col-9"
+              type="text"
+              name="name"
+              placeholder={t('modals.channelName')}
+              onChange={handleChange}
+              value={values.name}
+              isValid={touched.name && !errors.name}
+              isInvalid={!!errors.name}
+              readOnly={isSubmitting}
+              autoFocus
+            />
+            <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-auto">
+              {t('modals.create')}
+            </Button>
+            <Form.Control.Feedback
+              type="invalid"
+              className="col-9"
+            >
+              {t(`validationErrors.${errors?.name?.key}`, { n: errors?.name?.value })}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+    </>
   );
-
-}
+};
 
 export default ChannelNameInputModal;

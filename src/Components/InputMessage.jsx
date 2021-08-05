@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -8,8 +8,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useApi } from '../features/socketApi.js';
-import { useAuth } from '../features/authorization.js';
-import { sendNewMessage } from '../slices/messagesSlice.js';
 
 yup.setLocale({
   mixed: {
@@ -17,7 +15,7 @@ yup.setLocale({
   },
   string: {
     max: ({ max }) => ({ key: 'charMax', value: max }),
-  }
+  },
 });
 
 const schema = yup.object().shape({
@@ -26,18 +24,17 @@ const schema = yup.object().shape({
       .string()
       .required()
       .trim()
-      .max(280)    
+      .max(280),
 });
 
 const InputMessage = () => {
   const [t] = useTranslation();
   const socketApi = useApi();
-  const dispatch = useDispatch();
   const { id } = useSelector((state) => state.currentChannelId);
   const user = useSelector((state) => state.authentification.user);
-  
+
   const setFormikState = (state, formik) => {
-    switch(state) {
+    switch (state) {
       case 'submitting':
         formik.setSubmitting(true);
         break;
@@ -61,22 +58,23 @@ const InputMessage = () => {
     try {
       await socketApi.sendNewMessage(message);
       await setFormikState('success', formik);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
+      formik.setFieldError('message', { key: error });
       setFormikState('failed', formik);
     }
   };
-  
+
   const formik = useFormik({
     initialValues: {
       message: '',
     },
     onSubmit: sendMessage,
-    validationSchema: schema
+    validationSchema: schema,
   });
 
   const {
-    handleSubmit, handleChange, values, touched, errors, isSubmitting
+    handleSubmit, handleChange, values, touched, errors, isSubmitting,
   } = formik;
 
   return (
@@ -85,22 +83,24 @@ const InputMessage = () => {
         onSubmit={handleSubmit}
         noValidate
         className="d-flex ml-1 row"
-        autoComplete="off">
+        autoComplete="off"
+      >
         <Form.Control
           type="text"
           name="message"
           placeholder={t('controls.enterMessage')}
           onChange={handleChange}
-          value={"" || values.message}
+          value={'' || values.message}
           isValid={touched.username && !errors.message}
           isInvalid={!!errors.message}
           readOnly={isSubmitting}
           className="col-10"
         />
-        <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-1">{t('controls.sendMessage')}</Button>
+        <Button type="submit" variant="outline-success" disabled={isSubmitting} className="ml-1">{t('controls.sendMessage')}</Button>
         <Form.Control.Feedback
           className="col-9"
-          type="invalid">
+          type="invalid"
+        >
           {t(`validationErrors.${errors?.message?.key}`, { n: errors?.message?.value })}
         </Form.Control.Feedback>
       </Form>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -7,18 +7,13 @@ import {
 } from 'react-router-dom';
 
 import AuthContext from '../Contexts/AuthContext.js';
-import { useProvideAuth, useAuth } from '../features/authorization.js';
+import { useProvideAuth } from '../features/authorization.js';
 
 import MainPage from './MainPage.jsx';
 import LoginForm from './LoginForm.jsx';
 import SignupForm from './SignupForm.jsx';
-import paths from '../routes.js';
 
 export default function App() {
-  const { loginPagePath } = paths;
-
-  console.log('Expirience from App -------');
-
   const PageNotFound = () => (<h2>Oops Page Not Found</h2>);
 
   const ProvideAuth = ({ children }) => {
@@ -28,25 +23,22 @@ export default function App() {
         {children}
       </AuthContext.Provider>
     );
-    return result
+    return result;
   };
 
-  const PrivateRoute = ({ children, ...rest }) => {
-    const auth = useAuth();
-    return (
-      <Route
-        {...rest}
-        render={({ location }) => localStorage.getItem('token')
-            ? (children)
-            : (
-              <Redirect from="/"
-                to="/login"
-              />
-            )
-        }
-        />
-      )
-  };
+  const PrivateRoute = ({ children, ...rest }) => (
+    <Route
+      {...rest}
+      render={() => (localStorage.getItem('token')
+        ? (children)
+        : (
+          <Redirect
+            from="/"
+            to="/login"
+          />
+        ))}
+    />
+  );
 
   return (
     <ProvideAuth>

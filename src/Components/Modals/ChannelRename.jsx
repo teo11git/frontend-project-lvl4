@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import * as yup from 'yup';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -11,23 +13,22 @@ import { useApi } from '../../features/socketAPI.js';
 
 const ChannelRename = ({ channel, existedNames }) => {
   const socketApi = useApi();
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const [t] = useTranslation();
 
-  const oldName = channel.name;
-
-	const schema = yup.object().shape({
-		name:
-			yup
-				.string()
-				.required()
-				.trim()
-				.lowercase()
-				.max(30)
-				.notOneOf(existedNames)
-	});
+  const schema = yup.object().shape({
+    name:
+      yup
+        .string()
+        .required()
+        .trim()
+        .lowercase()
+        .max(30)
+        .notOneOf(existedNames),
+  });
 
   const setFormikState = (state, formik) => {
-    switch(state) {
+    switch (state) {
       case 'submitting':
         formik.setSubmitting(true);
         break;
@@ -42,69 +43,68 @@ const ChannelRename = ({ channel, existedNames }) => {
         // do nothing
     }
   };
- 
-	const sendName = async (values, formik) => {
-		const newChannel = { ...channel, name: values.name, }
+
+  const sendName = async (values, formik) => {
+    const newChannel = { ...channel, name: values.name };
     setFormikState('submitting', formik);
     try {
       await socketApi.renameChannel(newChannel);
       await setFormikState('success', formik);
       dispatch(setModalShow({ show: false }));
-    } catch(e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
+      formik.setFieldError('name', { key: err });
       setFormikState('failed', formik);
     }
-	};
-  console.log('old name is ', oldName);
+  };
 
-	const formik = useFormik({
-		initialValues: {
-			name: 'Why!!!',
+  const formik = useFormik({
+    initialValues: {
+      name: '',
     },
-		onSubmit: sendName,
-		validationSchema: schema,
-		validateOnChange: false,
-		validateOnBlur: false,
-	});
+    onSubmit: sendName,
+    validationSchema: schema,
+    validateOnChange: false,
+    validateOnBlur: false,
+  });
 
-	const { handleSubmit, handleChange, values, touched, errors } = formik;
+  const {
+    handleSubmit, handleChange, values, touched, errors, isSubmitting,
+  } = formik;
 
-  console.log(formik);
-  console.log('values is', values);
-  
-	return (
+  return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Set channel name</Modal.Title>
+        <Modal.Title>{t('modals.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
-      		onSubmit={handleSubmit}
-      		noValidate
-			  >
-				  <Form.Group className="row mx-1">
-      		  <Form.Control
-						  className="col-9"
-       			  type="text"
-       			  name="name"
-       			  placeholder="Channel name"
-       			  onChange={handleChange}
-       			  value={values.name}
-       			  isValid={touched.name && !errors.name}
-       			  isInvalid={!!errors.name}
-      		  />
-      		    <Button type="submit" variant="dark" className="ml-auto">
-                Update
-              </Button>
-					  <Form.Control.Feedback type="invalid" className="col-9">{errors.name}</Form.Control.Feedback>
-				  </Form.Group>
-				</ Form>
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <Form.Group className="row mx-1">
+            <Form.Control
+              className="col-9"
+              type="text"
+              name="name"
+              placeholder={t('modals.newName')}
+              onChange={handleChange}
+              value={values.name}
+              isValid={touched.name && !errors.name}
+              isInvalid={!!errors.name}
+              readOnly={isSubmitting}
+            />
+            <Button type="submit" disabled={isSubmitting} variant="dark" className="ml-auto">
+              {t('modals.update')}
+            </Button>
+            <Form.Control.Feedback type="invalid" className="col-9">
+              {t(`validationErrors.${errors?.name?.key}`, { n: errors?.name?.value })}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form>
       </Modal.Body>
     </>
   );
-
-}
+};
 
 export default ChannelRename;
-
-

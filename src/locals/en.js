@@ -23,18 +23,30 @@ export default {
       colorTheme: 'Theme',
       lang: 'ru',
     },
- 
+    modals: {
+      createChannel: 'Create channel',
+      channelName: 'channel name',
+      create: 'Create',
+      renameChannel: 'Rename channel',
+      newName: 'type new name',
+      update: 'update',
+      confirmDelete: 'Are you shure?',
+      removeChannel: 'Remove channel',
+      yes: 'Yes',
+      no: 'No',
+    },
     validationErrors: {
       required: 'This is required field',
       charMin: 'must contain at least {{n}} characters',
       charMax: 'must contain no more than {{n}} characters',
-      'must_mutch': 'Passwords must mutch',
-      'already_in_use': 'Sorry, name already in use',
+      must_mutch: 'Passwords must mutch',
+      already_in_use: 'Sorry, name already in use',
+      connection_lost: 'Network error',
     },
     headers: {
       channels: 'Channels',
       message: '{{count}} Message',
       message_plural: '{{count}} Messages',
     },
-  }
-}
+  },
+};

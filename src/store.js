@@ -12,6 +12,6 @@ export const store = configureStore({
     messages: messagesReducer,
     currentChannelId: currentChannelIdReducer,
     authentification: authentificationReducer,
-    ui: uiSliceReducer, 
+    ui: uiSliceReducer,
   },
 });

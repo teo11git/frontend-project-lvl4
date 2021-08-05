@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { user: null};
+const initialState = { user: null };
 
 export const authSlice = createSlice({
   name: 'authentification',
@@ -9,7 +9,7 @@ export const authSlice = createSlice({
     setCurrentUser: (state, { payload }) => {
       state.user = payload.user;
     },
-  }
+  },
 });
 
 export const { setCurrentUser } = authSlice.actions;

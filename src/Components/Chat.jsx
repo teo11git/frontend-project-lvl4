@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import Channels from './Channels.jsx';
-import CurrentChannel from './CurrentChannel';
+import CurrentChannel from './CurrentChannel.jsx';
 
 const Chat = () => (
   <Container fluid="md" className="h-100 py-3 justify-content-around">

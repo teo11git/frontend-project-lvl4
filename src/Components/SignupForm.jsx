@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Card, Form, Button, Alert,
 } from 'react-bootstrap';
@@ -15,7 +15,7 @@ yup.setLocale({
   mixed: {
     required: () => ({ key: 'required' }),
     oneOf: () => ({ key: 'must_match' }),
-  }, 
+  },
   string: {
     min: ({ min }) => ({ key: 'charMin', value: min }),
     max: ({ max }) => ({ key: 'charMax', value: max }),
@@ -23,7 +23,7 @@ yup.setLocale({
 });
 
 const schema = yup.object().shape({
-  username: 
+  username:
     yup
       .string()
       .required()
@@ -31,12 +31,11 @@ const schema = yup.object().shape({
       .max(20),
   password: yup.string().required().min(6),
   passwordConfirm: yup.string().required()
-       .oneOf([yup.ref('password'), null]),
+    .oneOf([yup.ref('password'), null]),
 });
 
 const SignupForm = () => {
   const auth = useAuth();
-  const location = useLocation();
   const history = useHistory();
   const [t, i18n] = useTranslation();
 
@@ -46,7 +45,7 @@ const SignupForm = () => {
       : i18n.changeLanguage('ru');
   };
 
-  const makeRedirect = (to, history) => history.replace(to);
+  const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const sendForm = (values, formik) => {
     console.log(values);
@@ -59,7 +58,7 @@ const SignupForm = () => {
       if (err === 'Conflict') {
         formik.setFieldError('username', { key: 'already_in_use' });
       }
-      console.log(err)
+      console.log(err);
     };
     auth.signup(values, onSuccess, onError);
   };
@@ -81,80 +80,79 @@ const SignupForm = () => {
   } = formik;
   return (
     <>
-    <Button variant="link" className="float-right mr-2 my-0" onClick={changeLanguage}>{t('changeLang')}</Button>
-    <Card className="mx-auto" style={{ width: '20rem' }}>
-    <Card.Header><h4>{t('auth.signup')}</h4></Card.Header>
-      <Card.Body>
-        <Form
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <Form.Group controlId="formBasicName">
-            <Form.Label>{t('auth.userName')}</Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              onChange={handleChange}
-              values={values.username}
-              isValid={touched.username && !errors.username}
-              isInvalid={!!errors.username}
-              placeholder={t('auth.enterName')}
-              autoFocus
-            />
-            <Form.Control.Feedback type="invalid">
-              {t(`validationErrors.${errors?.username?.key}`, { n: errors?.username?.value})}
-            </Form.Control.Feedback>
-          </Form.Group>
+      <Button variant="link" className="float-right mr-2 my-0" onClick={changeLanguage}>{t('changeLang')}</Button>
+      <Card className="mx-auto" style={{ width: '20rem' }}>
+        <Card.Header><h4>{t('auth.signup')}</h4></Card.Header>
+        <Card.Body>
+          <Form
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <Form.Group controlId="formBasicName">
+              <Form.Label>{t('auth.userName')}</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                onChange={handleChange}
+                values={values.username}
+                isValid={touched.username && !errors.username}
+                isInvalid={!!errors.username}
+                placeholder={t('auth.enterName')}
+                autoFocus
+              />
+              <Form.Control.Feedback type="invalid">
+                {t(`validationErrors.${errors?.username?.key}`, { n: errors?.username?.value })}
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>{t('auth.password')}</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              values={values.password}
-              onChange={handleChange}
-              isValid={touched.password && !errors.password}
-              isInvalid={!!errors.password}
-              placeholder={t('auth.enterPassword')}
-            />
-            <Form.Control.Feedback type="invalid">
-              {console.log(errors?.password?.key)}
-              {t(`validationErrors.${errors?.password?.key}`, { n: errors?.password?.value})}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formBasicPasswordConf">
-            <Form.Label>{t('auth.passwordConfirm')}</Form.Label>
-            <Form.Control
-              type="password"
-              name="passwordConfirm"
-              values={values.passwordConfirm}
-              onChange={handleChange}
-              isValid={touched.passwordConfirm && !errors.passwordConfirm}
-              isInvalid={!!errors.passwordConfirm}
-              placeholder={t('auth.repeatPassword')}
-            />
-            <Form.Control.Feedback type="invalid">
-              {t(`validationErrors.${errors?.passwordConfirm?.key}`, { n: errors?.passwordConfirm?.value})}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            {t('auth.submit')}
-          </Button>
-        </Form>
-      </Card.Body>
-      {formik.status === 'Auth error'
-        ? (
-          <Card.Footer>
-            <Alert variant="danger" className="text-center">
-              Cannot found username or password!
-            </Alert>
-          </Card.Footer>
-        )
-        : null}
-    </Card>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>{t('auth.password')}</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                values={values.password}
+                onChange={handleChange}
+                isValid={touched.password && !errors.password}
+                isInvalid={!!errors.password}
+                placeholder={t('auth.enterPassword')}
+              />
+              <Form.Control.Feedback type="invalid">
+                {console.log(errors?.password?.key)}
+                {t(`validationErrors.${errors?.password?.key}`, { n: errors?.password?.value })}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formBasicPasswordConf">
+              <Form.Label>{t('auth.passwordConfirm')}</Form.Label>
+              <Form.Control
+                type="password"
+                name="passwordConfirm"
+                values={values.passwordConfirm}
+                onChange={handleChange}
+                isValid={touched.passwordConfirm && !errors.passwordConfirm}
+                isInvalid={!!errors.passwordConfirm}
+                placeholder={t('auth.repeatPassword')}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t(`validationErrors.${errors?.passwordConfirm?.key}`, { n: errors?.passwordConfirm?.value })}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {t('auth.submit')}
+            </Button>
+          </Form>
+        </Card.Body>
+        {formik.status === 'Auth error'
+          ? (
+            <Card.Footer>
+              <Alert variant="danger" className="text-center">
+                Cannot found username or password!
+              </Alert>
+            </Card.Footer>
+          )
+          : null}
+      </Card>
     </>
   );
 };
 
 export default SignupForm;
-

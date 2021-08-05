@@ -1,10 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../Contexts/AuthContext.js';
 import { setCurrentUser } from '../slices/authentificationSlice.js';
-import paths from '../routes.js';
 import { store } from '../store.js';
-
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -15,8 +13,8 @@ const setToLocalStorage = (values) => {
 
 const makeAuth = {
   isAuthenticated: false,
-  login: (data, cb, errCb) => {
-    axios.post('api/v1/login', data)
+  login: (userInfo, cb, errCb) => {
+    axios.post('api/v1/login', userInfo)
       .then(({ data }) => {
         const { token, username } = data;
         setToLocalStorage({
@@ -36,9 +34,9 @@ const makeAuth = {
     cb();
     makeAuth.isAuthenticated = false;
   },
-  
-  signup: (data, cb, errCb) => {
-    axios.post('api/v1/signup', data)
+
+  signup: (authInfo, cb, errCb) => {
+    axios.post('api/v1/signup', authInfo)
       .then(({ data }) => {
         const { token, username } = data;
         setToLocalStorage({
@@ -68,11 +66,11 @@ export const useProvideAuth = () => {
   });
 
   const signup = (data, cb, errCb) => makeAuth.signup(data, (username) => {
-    store.dispatch(setCurrentUser({ user: username}));
+    store.dispatch(setCurrentUser({ user: username }));
     cb();
   }, errCb);
 
   return {
-    login, logout, signup
+    login, logout, signup,
   };
 };

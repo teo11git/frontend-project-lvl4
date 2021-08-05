@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Navbar, Button } from 'react-bootstrap';
-import { useRedirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-import { useAuth } from '../features/authorization.js';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../features/authorization.js';
 
 const MainNavbar = () => {
   const history = useHistory();
@@ -16,17 +16,17 @@ const MainNavbar = () => {
       : i18n.changeLanguage('ru');
   };
 
-  const makeRedirect = (to, history) => history.replace(to);
+  const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const redirectToMain = () => {
     makeRedirect('./', history);
   };
 
   const logOut = () => {
-   const logOutHandler = () => {
+    const logOutHandler = () => {
       makeRedirect('./', history);
-   };
-    
+    };
+
     auth.logout(logOutHandler);
   };
 
@@ -34,11 +34,10 @@ const MainNavbar = () => {
     <Navbar expand="lg" bg="dark" variant="dark">
       <Container>
         <h1><a className="text-light" href="#" onClick={redirectToMain}>Hexlet Chat</a></h1>
-    <div>
-        <Button type="button" variant="link" onClick={logOut}>{t('controls.logout')}</Button>
-        <Button type="button" variant="link" onClick={null}>{t('controls.colorTheme')}</Button>
-        <Button type="button" variant="link" onClick={changeLang}>{t('controls.lang')}</Button>
-    </div>
+        <div>
+          <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
+          <Button type="button" variant="link" className="text-light" onClick={changeLang}>{t('controls.lang')}</Button>
+        </div>
       </Container>
     </Navbar>
   );

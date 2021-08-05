@@ -42,6 +42,7 @@ export default (app, defaultState = {}) => {
   const state = buildState(defaultState);
 
   app.io.on('connect', (socket) => {
+    console.log('>>>>>>>-CONNECTED_TO_SOCKET-<<<<<<<');
     console.log({ 'socket.id': socket.id });
 
     socket.on('newMessage', (message, acknowledge = _.noop) => {
@@ -50,7 +51,7 @@ export default (app, defaultState = {}) => {
         id: getNextId(),
       };
       state.messages.push(messageWithId);
-      acknowledge({ status: 'ok' });
+      acknowledge({ status: 'ok', data: messageWithId });
       app.io.emit('newMessage', messageWithId);
     });
 
@@ -82,7 +83,7 @@ export default (app, defaultState = {}) => {
       if (!channel) return;
       channel.name = name;
 
-      acknowledge({ status: 'ok' });
+      acknowledge({ status: 'ok', data: channel });
       app.io.emit('renameChannel', channel);
     });
   });

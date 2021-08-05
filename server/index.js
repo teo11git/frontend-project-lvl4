@@ -62,9 +62,9 @@ const setUpAuth = (app) => {
 export default async (options) => {
   const app = fastify({ logger: { prettyPrint: true } });
 
-  setUpAuth(app);
-  setUpViews(app);
-  setUpStaticAssets(app);
+  setUpAuth(app); // 47 Настраивает аутентификацию ?
+  setUpViews(app); // 26 Устанавливает пути, и настраивает начальный HTML
+  setUpStaticAssets(app); // 40 раздача
   await app.register(fastifySocketIo);
   addRoutes(app, options.state || {});
 

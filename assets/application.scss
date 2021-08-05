@@ -1,1 +1,8 @@
 @import '~bootstrap/scss/bootstrap';
+
+.scroll-enabled {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 50px;
+  overflow: auto;
+}

@@ -17,6 +17,7 @@ import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
 export default (socket) => {
+  console.log('<<<<<<< START APP >>>>>>>')
   // const socket = io();
   // console.log('Socket is');
   // console.log(socket);

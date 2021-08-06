@@ -60,7 +60,7 @@ const ChannelRename = ({ channel, existedNames }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: channel.name,
     },
     onSubmit: sendName,
     validationSchema: schema,
@@ -81,6 +81,7 @@ const ChannelRename = ({ channel, existedNames }) => {
         <Form
           onSubmit={handleSubmit}
           noValidate
+          autoComplete="off"
         >
           <Form.Group className="row mx-1">
             <Form.Control

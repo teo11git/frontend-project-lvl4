@@ -82,6 +82,7 @@ const ChannelNameInputModal = ({ existedNames }) => {
         <Form
           onSubmit={handleSubmit}
           noValidate
+          autoComplete="off"
         >
           <Form.Group className="row mx-1">
             <Form.Control

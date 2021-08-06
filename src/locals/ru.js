@@ -12,7 +12,7 @@ export default {
       passwordConfirm: 'Подтвердите пароль',
       repeatPassword: 'повторите пароль',
       submit: 'Войти',
-      make_registration: 'Зарегестрироваться',
+      make_registration: 'Зарегистрироваться',
       orSignup: 'Регистрация',
     },
     controls: {

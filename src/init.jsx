@@ -18,8 +18,8 @@ import { implementApi } from './features/socketAPI.js';
 
 export default (socket) => {
   // const socket = io();
-  console.log('Socket is');
-  console.log(socket);
+  // console.log('Socket is');
+  // console.log(socket);
   const rollbarConfig = {
     accessToken: '32f20a07361646a5a260bea7c1d43761',
     captureUncaught: true,

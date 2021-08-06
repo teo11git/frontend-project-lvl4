@@ -13,7 +13,7 @@ export default {
       repeatPassword: 'повторите пароль',
       submit: 'Войти',
       make_registration: 'Зарегестрироваться',
-      orSignup: 'нет аккаунта?',
+      orSignup: 'Регистрация',
     },
     controls: {
       addChannel: 'Создать',

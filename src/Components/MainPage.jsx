@@ -17,19 +17,19 @@ import { useAuth } from '../features/authorization.js';
 
 const synchronizeWithServer = async (token, dispatch, setStatus) => {
   try {
-    setStatus('gettingData');
+    // setStatus('gettingData');
     const responce = await axios.get('/api/v1/data',
       {
         headers: { Authorization: `Bearer ${token}` },
       });
-    setStatus('success');
+    // setStatus('success');
     const { channels, messages, currentChannelId } = responce.data;
     dispatch(synchronizeChannels({ channels }));
     dispatch(synchronizeMessages({ messages }));
     dispatch(setCurrentChannelId({ id: currentChannelId }));
   } catch (e) {
     console.log(e);
-    setStatus('failed');
+    // setStatus('failed');
   }
 };
 const Modals = () => {

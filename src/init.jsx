@@ -27,7 +27,7 @@ export default async (socket) => {
 
   const i18n = i18next.createInstance();
 
-  i18n
+  await i18n
     .use(initReactI18next)
     .init({
       lng: 'ru',

@@ -16,11 +16,9 @@ import { setCurrentChannelId } from './slices/currentChannelIdSlice.js';
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
-export default (socket) => {
+export default async (socket) => {
   console.log('<<<<<<< START APP >>>>>>>')
   // const socket = io();
-  // console.log('Socket is');
-  // console.log(socket);
   const rollbarConfig = {
     accessToken: '32f20a07361646a5a260bea7c1d43761',
     captureUncaught: true,
@@ -42,8 +40,6 @@ export default (socket) => {
   if (isUserExists) {
     store.dispatch(setCurrentUser({ user: currentUser }));
   }
-
-  // socket.onAny((e) => console.log(`SOCKET IO RECIEVED ${e}`));
 
   socket.on('newMessage', (messageWithId) => {
     store.dispatch(addMessage(messageWithId));

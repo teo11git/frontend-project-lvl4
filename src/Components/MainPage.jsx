@@ -15,8 +15,9 @@ import Chat from './Chat.jsx';
 import allModals from './Modals/index.js';
 import { useAuth } from '../features/authorization.js';
 
-const synchronizeWithServer = async (token, dispatch, setStatus) => {
+const synchronizeWithServer = async (token, dispatch) => {
   try {
+    // it is possible add setStatus to function params
     // setStatus('gettingData');
     const responce = await axios.get('/api/v1/data',
       {
@@ -63,7 +64,7 @@ const Modals = () => {
 };
 
 const MainPage = () => {
-  const [, setStatus] = useState('noActivity');
+  // const [, setStatus] = useState('noActivity');
   const dispatch = useDispatch();
   const history = useHistory();
   const auth = useAuth();
@@ -71,7 +72,7 @@ const MainPage = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    synchronizeWithServer(token, dispatch, setStatus);
+    synchronizeWithServer(token, dispatch);
   }, []);
 
   const makeRedirect = (to, historyList) => historyList.replace(to);

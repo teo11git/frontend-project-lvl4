@@ -17,8 +17,6 @@ import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
 export default async (socket) => {
-  console.log('<<<<<<< START APP >>>>>>>')
-  // const socket = io();
   const rollbarConfig = {
     accessToken: '32f20a07361646a5a260bea7c1d43761',
     captureUncaught: true,

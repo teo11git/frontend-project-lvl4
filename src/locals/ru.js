@@ -39,9 +39,9 @@ export default {
     },
     validationErrors: {
       required: 'Обязательно для заполнения',
-      charMin: 'Должно быть не менее {{n}} символов',
-      charMax: 'Должно быть не более {{n}} символов',
-      must_mutch: 'Пароли должны совпадать',
+      passLength: 'Не менее 6 символов',
+      nameLength: 'От 3 до 20 символов',
+      must_match: 'Пароли должны совпадать',
       already_in_use: 'Извините, имя занято',
       connection_lost: 'Ошибка сети',
       incorrect_name_pass: 'Неверные имя пользователя или пароль',

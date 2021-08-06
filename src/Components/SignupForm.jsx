@@ -14,12 +14,8 @@ import MainNavbar from './MainNavbar.jsx';
 
 yup.setLocale({
   mixed: {
-    required: () => ({ key: 'required' }),
-    oneOf: () => ({ key: 'must_match' }),
-  },
-  string: {
-    min: ({ min }) => ({ key: 'charMin', value: min }),
-    max: ({ max }) => ({ key: 'charMax', value: max }),
+    required: 'required',
+    oneOf: 'must_match',
   },
 });
 
@@ -28,9 +24,9 @@ const schema = yup.object().shape({
     yup
       .string()
       .required()
-      .min(3)
-      .max(20),
-  password: yup.string().required().min(6),
+      .min(3, 'nameLength')
+      .max(20, 'nameLength'),
+  password: yup.string().required().min(6, 'passLength'),
   passwordConfirm: yup.string().required()
     .oneOf([yup.ref('password'), null]),
 });
@@ -94,7 +90,7 @@ const SignupForm = () => {
                 autoFocus
               />
               <Form.Control.Feedback type="invalid">
-                {t(`validationErrors.${errors?.username?.key}`, { n: errors?.username?.value })}
+                {t(`validationErrors.${errors.username}`)}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -110,7 +106,7 @@ const SignupForm = () => {
                 placeholder={t('auth.enterPassword')}
               />
               <Form.Control.Feedback type="invalid">
-                {t(`validationErrors.${errors?.password?.key}`, { n: errors?.password?.value })}
+                {t(`validationErrors.${errors.password}`)}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBasicPasswordConf">
@@ -125,7 +121,7 @@ const SignupForm = () => {
                 placeholder={t('auth.repeatPassword')}
               />
               <Form.Control.Feedback type="invalid">
-                {t(`validationErrors.${errors?.passwordConfirm?.key}`, { n: errors?.passwordConfirm?.value })}
+                {t(`validationErrors.${errors.passwordConfirm}`)}
               </Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit">

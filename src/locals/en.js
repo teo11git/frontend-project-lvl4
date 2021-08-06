@@ -39,9 +39,9 @@ export default {
     },
     validationErrors: {
       required: 'This is required field',
-      charMin: 'must contain at least {{n}} characters',
-      charMax: 'must contain no more than {{n}} characters',
-      must_mutch: 'Passwords must mutch',
+      passLength: 'must contain at least 5 characters',
+      nameLength: 'From 3 to 20 characters',
+      must_match: 'Passwords must mutch',
       already_in_use: 'Sorry, name already in use',
       connection_lost: 'Network error',
       incorrect_name_pass: 'Incorrect name and(or) password',

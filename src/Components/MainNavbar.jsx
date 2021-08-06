@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Navbar, Button } from 'react-bootstrap';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
 // import { useAuth } from '../features/authorization.js';
 
 const MainNavbar = ({ children }) => {
-  // const history = useHistory();
+  const history = useHistory();
   // const auth = useAuth();
   const [t, i18n] = useTranslation();
 
@@ -18,10 +18,12 @@ const MainNavbar = ({ children }) => {
   };
   /* eslint-enable no-unused-expressions */
 
-  // const makeRedirect = (to, historyList) => historyList.replace(to);
+  const makeRedirect = (to, historyList) => historyList.replace(to);
 
-  const redirectToMain = () => {
-    // makeRedirect('./', history);
+  const redirectToMain = (e) => {
+    console.log('click!');
+    e.preventDefault();
+    makeRedirect('./', history);
   };
 
   return (

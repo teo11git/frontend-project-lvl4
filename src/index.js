@@ -13,8 +13,8 @@ const runApp = async () => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
-  // const socket = socketIO();
-  const virtualDom = await init(socketIO);
+  const socket = socketIO();
+  const virtualDom = await init(socket);
   const element = document.getElementById('chat');
   ReactDom.render(virtualDom, element);
 };

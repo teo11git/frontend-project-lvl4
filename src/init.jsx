@@ -17,7 +17,7 @@ import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
 export default (io) => {
-  const socket = io();
+  // const socket = io();
   console.log('Socket is');
   console.log(socket);
   const rollbarConfig = {
@@ -42,7 +42,7 @@ export default (io) => {
     store.dispatch(setCurrentUser({ user: currentUser }));
   }
 
-  socket.onAny((e) => console.log(`SOCKET IO RECIEVED ${e}`));
+  // socket.onAny((e) => console.log(`SOCKET IO RECIEVED ${e}`));
 
   socket.on('newMessage', (messageWithId) => {
     store.dispatch(addMessage(messageWithId));

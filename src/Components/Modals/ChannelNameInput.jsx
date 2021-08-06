@@ -95,6 +95,7 @@ const ChannelNameInputModal = ({ existedNames }) => {
               isInvalid={!!errors.name}
               readOnly={isSubmitting}
               autoFocus
+              data-testid="add-channel"
             />
             <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-auto">
               {t('modals.create')}

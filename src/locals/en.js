@@ -4,13 +4,15 @@ export default {
     auth: {
       login: 'Log in',
       signup: 'Sign up',
+      nickname: 'User name',
       userName: 'User name',
       enterName: 'enter name',
       password: 'Password',
       enterPassword: 'enter password',
       passwordConfirm: 'Confirm password',
       repeatPassword: 'repeat your password',
-      submit: 'Send',
+      submit: 'Enter',
+      make_registration: 'Create account',
       orSignup: 'or signup',
     },
     controls: {
@@ -42,6 +44,7 @@ export default {
       must_mutch: 'Passwords must mutch',
       already_in_use: 'Sorry, name already in use',
       connection_lost: 'Network error',
+      incorrect_name_pass: 'Incorrect name and(or) password',
     },
     headers: {
       channels: 'Channels',

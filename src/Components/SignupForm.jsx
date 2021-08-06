@@ -136,7 +136,7 @@ const SignupForm = () => {
               </Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit">
-              {t('auth.submit')}
+              {t('auth.make_registration')}
             </Button>
           </Form>
         </Card.Body>

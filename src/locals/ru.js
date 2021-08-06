@@ -4,13 +4,15 @@ export default {
     auth: {
       login: 'Вход',
       signup: 'Регистрация',
+      nickname: 'Ваш ник',
       userName: 'Имя пользователя',
-      enterName: 'ваше имя',
+      enterName: 'ваш ник',
       password: 'Пароль',
-      enterPassword: 'укажите пароль',
+      enterPassword: 'ваш пароль',
       passwordConfirm: 'Подтвердите пароль',
       repeatPassword: 'повторите пароль',
-      submit: 'Отправить',
+      submit: 'Войти',
+      make_registration: 'Зарегестрироваться',
       orSignup: 'нет аккаунта?',
     },
     controls: {
@@ -42,6 +44,7 @@ export default {
       must_mutch: 'Пароли должны совпадать',
       already_in_use: 'Извините, имя занято',
       connection_lost: 'Ошибка сети',
+      incorrect_name_pass: 'Неверные имя пользователя или пароль',
     },
     headers: {
       channels: 'Каналы',

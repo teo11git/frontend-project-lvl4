@@ -95,6 +95,7 @@ const InputMessage = () => {
           isInvalid={!!errors.message}
           readOnly={isSubmitting}
           className="col-10"
+          data-testid="new-message"
         />
         <Button type="submit" variant="outline-success" disabled={isSubmitting} className="ml-1">{t('controls.sendMessage')}</Button>
         <Form.Control.Feedback

@@ -35,7 +35,7 @@ const MainNavbar = () => {
   return (
     <Navbar expand="lg" bg="dark" variant="dark">
       <Container>
-        <h1><a className="text-light" href="/" onClick={redirectToMain}>Hexlet Chat</a></h1>
+        <h1><a className="text-light" href="/" onClick={redirectToMain}>Hexlet-Chat</a></h1>
         <div>
           <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
           <Button type="button" variant="link" className="text-light" onClick={changeLang}>{t('controls.lang')}</Button>

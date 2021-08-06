@@ -93,6 +93,7 @@ const ChannelRename = ({ channel, existedNames }) => {
               isValid={touched.name && !errors.name}
               isInvalid={!!errors.name}
               readOnly={isSubmitting}
+              data-testid="rename-channel"
             />
             <Button type="submit" disabled={isSubmitting} variant="dark" className="ml-auto">
               {t('modals.update')}

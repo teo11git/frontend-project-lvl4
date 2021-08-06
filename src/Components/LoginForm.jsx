@@ -110,7 +110,7 @@ const LoginForm = () => {
           ? (
             <Card.Footer>
               <Alert variant="danger" className="text-center">
-                Incorrect name or(and) password
+                {t('validationErrors.incorrect_name-password')}
               </Alert>
             </Card.Footer>
           )

@@ -16,7 +16,7 @@ export default {
       orSignup: 'Регистрация',
     },
     controls: {
-      addChannel: 'Создать',
+      addChannel: '+',
       changeChannel: 'Изменить',
       deleteChannel: 'Удалить',
       sendMessage: 'Отправить',

@@ -28,7 +28,7 @@ export default {
     modals: {
       createChannel: 'Создать канал',
       channelName: 'ваше название',
-      create: 'Добавить',
+      create: 'Отправить',
       renameChannel: 'Сменить название',
       newName: 'новое название',
       update: 'Изменить',

@@ -62,7 +62,7 @@ const LoginForm = () => {
             noValidate
           >
             <Form.Group controlId="formBasicName">
-              <Form.Label>{t('auth.userName')}</Form.Label>
+              <Form.Label>{t('auth.nickname')}</Form.Label>
               <Form.Control
                 type="text"
                 name="username"

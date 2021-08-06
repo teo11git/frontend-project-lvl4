@@ -80,7 +80,7 @@ const ChannelsHeader = () => {
   return (
     <Container className="d-flex flex-row justify-content-between py-3 border-bottom">
       <h4>{t('headers.channels')}</h4>
-      <Button variant="outline-success" type="button" onClick={openModal}>{t('controls.addChannel')}</Button>
+      <Button variant="outline-success" type="button" name="+" onClick={openModal}>{t('controls.addChannel')}</Button>
     </Container>
   );
 };

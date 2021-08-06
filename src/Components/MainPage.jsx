@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { synchronizeChannels } from '../slices/channelsSlice.js';
 import { synchronizeMessages } from '../slices/messagesSlice';
@@ -11,6 +13,7 @@ import { setModalShow } from '../slices/uiSlice.js';
 import MainNavbar from './MainNavbar.jsx';
 import Chat from './Chat.jsx';
 import allModals from './Modals/index.js';
+import { useAuth } from '../features/authorization.js';
 
 const synchronizeWithServer = async (token, dispatch, setStatus) => {
   try {
@@ -62,14 +65,30 @@ const Modals = () => {
 const MainPage = () => {
   const [, setStatus] = useState('noActivity');
   const dispatch = useDispatch();
+  const history = useHistory();
+  const auth = useAuth();
+  const [t] = useTranslation();
   const token = localStorage.getItem('token');
+
   useEffect(() => {
     synchronizeWithServer(token, dispatch, setStatus);
   }, []);
 
+  const makeRedirect = (to, historyList) => historyList.replace(to);
+
+  const logOut = () => {
+    const logOutHandler = () => {
+      makeRedirect('./', history);
+    };
+
+    auth.logout(logOutHandler);
+  };
+
   return (
     <div className="d-flex flex-column h-100">
-      <MainNavbar />
+      <MainNavbar>
+        <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
+      </MainNavbar>
       <Chat />
       <Modals />
     </div>

@@ -10,6 +10,7 @@ import * as yup from 'yup';
 
 import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
+import MainNavbar from './MainNavbar.jsx';
 
 yup.setLocale({
   mixed: {
@@ -37,15 +38,7 @@ const schema = yup.object().shape({
 const SignupForm = () => {
   const auth = useAuth();
   const history = useHistory();
-  const [t, i18n] = useTranslation();
-
-  /* eslint-disable no-unused-expressions */
-  const changeLanguage = () => {
-    i18n.language === 'ru'
-      ? i18n.changeLanguage('en')
-      : i18n.changeLanguage('ru');
-  };
-  /* eslint-disable no-unused-expressions */
+  const [t] = useTranslation();
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
@@ -80,8 +73,8 @@ const SignupForm = () => {
   } = formik;
   return (
     <>
-      <Button variant="link" className="float-right mr-2 my-0" onClick={changeLanguage}>{t('changeLang')}</Button>
-      <Card className="mx-auto" style={{ width: '20rem' }}>
+      <MainNavbar />
+      <Card className="mx-auto mt-3" style={{ width: '20rem' }}>
         <Card.Header><h4>{t('auth.signup')}</h4></Card.Header>
         <Card.Body>
           <Form

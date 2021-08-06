@@ -16,7 +16,8 @@ import { setCurrentChannelId } from './slices/currentChannelIdSlice.js';
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
-export default (socket) => {
+export default (io) => {
+  const socket = io();
   console.log('Socket is');
   console.log(socket);
   const rollbarConfig = {

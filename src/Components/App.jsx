@@ -14,7 +14,7 @@ import LoginForm from './LoginForm.jsx';
 import SignupForm from './SignupForm.jsx';
 
 export default function App() {
-  console.log(window.location);
+  console.log(window.location.href);
   const PageNotFound = () => (<h2>Oops Page Not Found</h2>);
 
   const ProvideAuth = ({ children }) => {

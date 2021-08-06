@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
@@ -17,20 +17,16 @@ import { useAuth } from '../features/authorization.js';
 
 const synchronizeWithServer = async (token, dispatch) => {
   try {
-    // it is possible add setStatus to function params
-    // setStatus('gettingData');
     const responce = await axios.get('/api/v1/data',
       {
         headers: { Authorization: `Bearer ${token}` },
       });
-    // setStatus('success');
     const { channels, messages, currentChannelId } = responce.data;
     dispatch(synchronizeChannels({ channels }));
     dispatch(synchronizeMessages({ messages }));
     dispatch(setCurrentChannelId({ id: currentChannelId }));
   } catch (e) {
     console.log(e);
-    // setStatus('failed');
   }
 };
 const Modals = () => {
@@ -64,7 +60,6 @@ const Modals = () => {
 };
 
 const MainPage = () => {
-  // const [, setStatus] = useState('noActivity');
   const dispatch = useDispatch();
   const history = useHistory();
   const auth = useAuth();
@@ -73,6 +68,7 @@ const MainPage = () => {
 
   useEffect(() => {
     synchronizeWithServer(token, dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const makeRedirect = (to, historyList) => historyList.replace(to);

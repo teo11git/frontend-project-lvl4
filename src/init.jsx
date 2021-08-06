@@ -17,6 +17,8 @@ import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
 export default (socket) => {
+  console.log('Socket is');
+  console.log(socket);
   const rollbarConfig = {
     accessToken: '32f20a07361646a5a260bea7c1d43761',
     captureUncaught: true,
@@ -29,11 +31,9 @@ export default (socket) => {
     .use(initReactI18next)
     .init({
       lng: 'ru',
-      debug: true,
+      debug: false,
       resources,
     });
-
-  // const container = document.getElementById('chat');
 
   const currentUser = localStorage.getItem('username');
   const isUserExists = () => currentUser !== undefined;

@@ -16,7 +16,7 @@ import { setCurrentChannelId } from './slices/currentChannelIdSlice.js';
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
-export default (io) => {
+export default (socket) => {
   // const socket = io();
   console.log('Socket is');
   console.log(socket);

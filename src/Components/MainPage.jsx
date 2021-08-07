@@ -14,10 +14,11 @@ import MainNavbar from './MainNavbar.jsx';
 import Chat from './Chat.jsx';
 import allModals from './Modals/index.js';
 import { useAuth } from '../features/authorization.js';
+import paths from '../routes.js';
 
 const synchronizeWithServer = async (token, dispatch) => {
   try {
-    const responce = await axios.get('/api/v1/data',
+    const responce = await axios.get(paths.getDataRequest(),
       {
         headers: { Authorization: `Bearer ${token}` },
       });

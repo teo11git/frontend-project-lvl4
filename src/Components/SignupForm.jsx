@@ -41,11 +41,11 @@ const SignupForm = () => {
   const sendForm = (values, formik) => {
     const onSuccess = () => {
       formik.setStatus('Auth success');
-      makeRedirect(paths.mainPagePath(), history);
+      makeRedirect(paths.mainPage(), history);
     };
     const onError = (err) => {
       if (err === 'Conflict') {
-        formik.setFieldError('username', { key: 'already_in_use' });
+        formik.setFieldError('username', 'already_in_use');
       }
       console.log(err);
     };

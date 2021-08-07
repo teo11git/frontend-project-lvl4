@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import axios from 'axios';
+
 import AuthContext from '../Contexts/AuthContext.js';
 import { setCurrentUser } from '../slices/authentificationSlice.js';
 import store from '../store.js';
+import paths from '../routes.js';
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -14,7 +16,7 @@ const setToLocalStorage = (values) => {
 const makeAuth = {
   isAuthenticated: false,
   login: (userInfo, cb, errCb) => {
-    axios.post('api/v1/login', userInfo)
+    axios.post(paths.loginRequest(), userInfo)
       .then(({ data }) => {
         const { token, username } = data;
         setToLocalStorage({
@@ -35,7 +37,7 @@ const makeAuth = {
   },
 
   signup: (authInfo, cb, errCb) => {
-    axios.post('api/v1/signup', authInfo)
+    axios.post(paths.signupRequest(), authInfo)
       .then(({ data }) => {
         const { token, username } = data;
         setToLocalStorage({

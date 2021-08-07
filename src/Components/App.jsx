@@ -5,6 +5,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
+import paths from '../routes.js';
 
 import AuthContext from '../Contexts/AuthContext.js';
 import { useProvideAuth } from '../features/authorization.js';
@@ -33,8 +34,8 @@ export default function App() {
         ? (children)
         : (
           <Redirect
-            from="/"
-            to="/login"
+            from={paths.mainPage()}
+            to={paths.loginPage()}
           />
         ))}
     />
@@ -44,13 +45,13 @@ export default function App() {
     <ProvideAuth>
       <Router>
         <Switch>
-          <PrivateRoute exact path="/">
+          <PrivateRoute exact path={paths.mainPage()}>
             <MainPage />
           </PrivateRoute>
-          <Route path="/login">
+          <Route path={paths.loginPage()}>
             <LoginForm />
           </Route>
-          <Route exact path="/signup">
+          <Route exact path={paths.signupPage()}>
             <SignupForm />
           </Route>
           <Route path="*">

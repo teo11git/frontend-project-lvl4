@@ -29,7 +29,7 @@ const LoginForm = () => {
   const sendForm = (values, formik) => {
     const onSuccess = () => {
       formik.setStatus('Auth success');
-      makeRedirect(paths.mainPagePath(), history);
+      makeRedirect(paths.mainPage(), history);
     };
     const onError = () => {
       formik.setStatus('Auth error');
@@ -95,7 +95,7 @@ const LoginForm = () => {
               <Button variant="primary" type="submit">
                 {t('auth.submit')}
               </Button>
-              <Link to="/signup">{t('auth.orSignup')}</Link>
+              <Link to={paths.signupPage()}>{t('auth.orSignup')}</Link>
             </div>
           </Form>
         </Card.Body>

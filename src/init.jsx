@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Provider } from 'react-redux';
-import * as Rollbar from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
 
@@ -17,12 +16,6 @@ import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
 
 export default async (socket) => {
-  const rollbarConfig = {
-    accessToken: '32f20a07361646a5a260bea7c1d43761',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-  };
-
   const i18n = i18next.createInstance();
 
   await i18n
@@ -65,8 +58,6 @@ export default async (socket) => {
   const api = implementApi(socket);
 
   return (
-    <Rollbar.Provider config={rollbarConfig}>
-      <Rollbar.ErrorBoundary>
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
             <APIContext.Provider value={api}>
@@ -74,7 +65,5 @@ export default async (socket) => {
             </APIContext.Provider>
           </I18nextProvider>
         </Provider>
-      </Rollbar.ErrorBoundary>
-    </Rollbar.Provider>
   );
 };

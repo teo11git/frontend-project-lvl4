@@ -10,6 +10,13 @@ import socketIO from 'socket.io-client';
 import init from './init.jsx';
 
 const runApp = async () => {
+  new Rollbar({
+    accsessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    enabled: process.env.NODE_ENV === 'production'
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }

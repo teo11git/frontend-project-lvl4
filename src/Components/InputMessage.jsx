@@ -56,7 +56,7 @@ const InputMessage = () => {
     setFormikState('submitting', formik);
     formik.setSubmitting(true);
     try {
-      await socketApi.sendNewMessage(message);
+      await socketApi.sendNewMessag(message); //e
       await setFormikState('success', formik);
     } catch (error) {
       console.log(error);

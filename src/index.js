@@ -11,11 +11,11 @@ import Rollbar from 'rollbar';
 import init from './init.jsx';
 
 const runApp = async () => {
-  new Rollbar({
+  const rollbar = new Rollbar({
     accsessToken: process.env.ROLLBAR_ACCESS_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
-    enabled: process.env.NODE_ENV === 'production'
+    enabled: process.env.NODE_ENV === 'production',
   });
 
   if (process.env.NODE_ENV !== 'production') {

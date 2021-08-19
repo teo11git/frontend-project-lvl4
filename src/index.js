@@ -7,6 +7,7 @@ import '../assets/application.scss';
 import ReactDom from 'react-dom';
 import socketIO from 'socket.io-client';
 
+import Rollbar from 'rollbar';
 import init from './init.jsx';
 
 const runApp = async () => {

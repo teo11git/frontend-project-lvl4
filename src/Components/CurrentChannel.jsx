@@ -41,8 +41,8 @@ const CurrentChannelHeader = ({ channel }) => {
 };
 
 const CurrentChannel = () => {
-  const { id: currentId } = useSelector((state) => state.currentChannelId);
-  const currentChannel = useSelector((state) => state.channels)
+  const currentId = useSelector((state) => state.channels.currentChannelId);
+  const currentChannel = useSelector((state) => state.channels.channels)
     .find((ch) => ch.id === currentId);
   const messages = useSelector((state) => state.messages)
     .filter((message) => message.channelId === currentId);

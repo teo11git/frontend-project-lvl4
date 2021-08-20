@@ -30,7 +30,7 @@ const schema = yup.object().shape({
 const InputMessage = () => {
   const [t] = useTranslation();
   const socketApi = useApi();
-  const { id } = useSelector((state) => state.currentChannelId);
+  const id = useSelector((state) => state.channels.currentChannelId);
   const user = useSelector((state) => state.authentification.user);
 
   const setFormikState = (state, formik) => {
@@ -56,7 +56,7 @@ const InputMessage = () => {
     setFormikState('submitting', formik);
     formik.setSubmitting(true);
     try {
-      await socketApi.sendNewMessag(message); //e
+      await socketApi.sendNewMessage(message);
       await setFormikState('success', formik);
     } catch (error) {
       console.log(error);

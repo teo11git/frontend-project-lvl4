@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 
+console.log(process.env);
+
 module.exports = {
   mode,
   resolve: {
@@ -25,7 +27,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin(),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env),
+      'process.env': JSON.stringify(process.env)
     })
   ],
   module: {
@@ -45,5 +47,8 @@ module.exports = {
         ],
       },
     ],
+  },
+  perfomance: {
+    devtool: 'source-map',
   },
 };

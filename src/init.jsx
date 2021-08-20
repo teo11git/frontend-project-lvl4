@@ -8,9 +8,13 @@ import resources from './locals';
 import App from './Components/App.jsx';
 import store from './store.js';
 import { addMessage } from './slices/messagesSlice.js';
-import { addChannel, renameChannel, deleteChannel } from './slices/channelsSlice.js';
-import { setCurrentUser } from './slices/authentificationSlice.js';
-import { setCurrentChannelId } from './slices/currentChannelIdSlice.js';
+import {
+  addChannel,
+  renameChannel,
+  deleteChannel,
+  setCurrentChannelId
+} from './slices/channelsSlice.js';
+import { setCurrentUser } from './slices/authentificationSlice';
 
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
@@ -49,12 +53,14 @@ export default async (socket) => {
 
   socket.on('removeChannel', (dataWithId) => {
     store.dispatch(deleteChannel(dataWithId));
+    /*
     const currentChannelId = store.getState().currentChannelId.id;
     if (currentChannelId === dataWithId.id) {
       store.dispatch(setCurrentChannelId({ id: 1 }));
     }
+    */
   });
-
+// 
   const api = implementApi(socket);
 
   return (

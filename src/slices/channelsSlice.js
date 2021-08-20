@@ -3,7 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import _ from 'lodash';
 
-const initialState = [];
+import store from '../store.js';
+
+const initialState = {
+  channels: [],
+  currentChannelId: null,
+};
 
 // createNewChannel
 // renameChannel
@@ -22,18 +27,26 @@ export const channelsSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    synchronizeChannels: (state, { payload }) => payload.channels,
+    synchronizeChannels: (state, { payload }) => { state.channels = payload.channels },
     addChannel: (state, action) => {
-      state.push(action.payload);
+      state.channels.push(action.payload);
+    },
+    setCurrentChannelId: (state, { payload }) => {
+      state.currentChannelId = payload.id;
     },
     renameChannel: (state, { payload: channel }) => {
       const { id } = channel;
       const index = state.findIndex((ch) => ch.id === id);
-      state[index] = channel;
+      state.channels[index] = channel;
     },
     deleteChannel: (state, { payload }) => {
       const index = payload.id;
-      _.remove(state, (ch) => ch.id === index);
+      const currentChannelId = state.currentChannelId;
+      if (currentChannelId === index) {
+        store.dispatch(setCurrentChannelId({ id: 1 }));
+      }
+
+      _.remove(state.channels, (ch) => ch.id === index);
     },
   },
   /*
@@ -47,7 +60,7 @@ export const channelsSlice = createSlice({
 });
 
 export const {
-  addChannel, renameChannel, deleteChannel, synchronizeChannels,
+  addChannel, renameChannel, deleteChannel, synchronizeChannels, setCurrentChannelId,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

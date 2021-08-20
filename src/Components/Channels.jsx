@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { setModalShow, setModalType, setEditChannel } from '../slices/uiSlice.js';
-import { setCurrentChannelId } from '../slices/currentChannelIdSlice.js';
+import { setCurrentChannelId } from '../slices/channelsSlice.js';
 
 const Channel = ({ channel }) => {
   const { id, name, removable } = channel;
@@ -61,7 +61,7 @@ const Channel = ({ channel }) => {
 };
 
 const ChannelBox = () => {
-  const channels = useSelector((state) => state.channels);
+  const channels = useSelector((state) => state.channels.channels);
   return (
     <Nav variant="tabs" className="flex-column flex-nowrap mt-1 pt-1 px-2 scroll-enabled">
       {channels.map((channel) => <Channel key={channel.id} channel={channel} />)}

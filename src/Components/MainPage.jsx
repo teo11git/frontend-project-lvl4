@@ -5,9 +5,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { synchronizeChannels } from '../slices/channelsSlice.js';
+import { synchronizeChannels, setCurrentChannelId } from '../slices/channelsSlice.js';
 import { synchronizeMessages } from '../slices/messagesSlice';
-import { setCurrentChannelId } from '../slices/currentChannelIdSlice.js';
 import { setModalShow } from '../slices/uiSlice.js';
 
 import MainNavbar from './MainNavbar.jsx';
@@ -34,11 +33,11 @@ const Modals = () => {
   const dispatch = useDispatch();
   const modalType = useSelector((state) => state.ui.modalType);
   const modalShow = useSelector((state) => state.ui.modalShow);
-  const existedNames = useSelector(({ channels }) => channels)
+  const existedNames = useSelector((state) => state.channels.channels)
     .map((ch) => ch.name);
   const editChannelId = useSelector(({ ui }) => ui.editChannelId);
 
-  const neededChannel = useSelector(({ channels }) => channels)
+  const neededChannel = useSelector((state) => state.channels.channels)
     .find((ch) => ch.id === editChannelId);
 
   const handleClose = () => {

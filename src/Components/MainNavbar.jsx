@@ -21,7 +21,6 @@ const MainNavbar = ({ children }) => {
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const redirectToMain = (e) => {
-    console.log('click!');
     e.preventDefault();
     makeRedirect('./', history);
   };

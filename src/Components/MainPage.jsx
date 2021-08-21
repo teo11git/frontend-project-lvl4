@@ -64,7 +64,8 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const [t] = useTranslation();
-  const token = localStorage.getItem('token');
+  const token = JSON.parse(localStorage.getItem('userData')).token;
+  console.log(token);  
 
   useEffect(() => {
     synchronizeWithServer(token, dispatch);

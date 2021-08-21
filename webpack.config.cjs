@@ -48,7 +48,5 @@ module.exports = {
       },
     ],
   },
-  perfomance: {
-    devtool: 'source-map',
-  },
+  devtool: 'source-map',
 };

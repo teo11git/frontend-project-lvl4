@@ -9,6 +9,7 @@ import paths from '../routes.js';
 
 import AuthContext from '../Contexts/AuthContext.js';
 import { useProvideAuth } from '../features/authorization.js';
+import { useAuth } from '../features/authorization.js';
 
 import MainPage from './MainPage.jsx';
 import LoginForm from './LoginForm.jsx';
@@ -27,18 +28,23 @@ export default function App() {
     return result;
   };
 
-  const PrivateRoute = ({ children }) => (
-    <Route
-      render={() => (localStorage.getItem('token')
-        ? (children)
-        : (
-          <Redirect
-            from={paths.mainPage()}
-            to={paths.loginPage()}
-          />
-        ))}
-    />
-  );
+  const PrivateRoute = ({ children }) => {
+    const auth = useAuth();
+    console.log(`In app.js user is ${auth.user}`);
+
+    return (
+      <Route
+        render={() => (auth.user)
+          ? (children)
+          : (
+            <Redirect
+              from={paths.mainPage()}
+              to={paths.loginPage()}
+            />
+          )}
+      />
+    );
+  };
 
   return (
     <ProvideAuth>

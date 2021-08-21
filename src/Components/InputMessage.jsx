@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useApi } from '../features/socketAPI.js';
+import { useAuth } from '../features/authorization.js';
 
 yup.setLocale({
   mixed: {
@@ -30,8 +31,9 @@ const schema = yup.object().shape({
 const InputMessage = () => {
   const [t] = useTranslation();
   const socketApi = useApi();
+  const auth = useAuth();
   const id = useSelector((state) => state.channels.currentChannelId);
-  const user = useSelector((state) => state.authentification.user);
+  const user = auth.user;
 
   const setFormikState = (state, formik) => {
     switch (state) {

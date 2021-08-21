@@ -14,7 +14,6 @@ import {
   deleteChannel,
   setCurrentChannelId
 } from './slices/channelsSlice.js';
-import { setCurrentUser } from './slices/authentificationSlice';
 
 import APIContext from './Contexts/APIContext.js';
 import { implementApi } from './features/socketAPI.js';
@@ -33,7 +32,7 @@ export default async (socket) => {
   const currentUser = localStorage.getItem('username');
   const isUserExists = () => currentUser !== undefined;
   if (isUserExists) {
-    store.dispatch(setCurrentUser({ user: currentUser }));
+    // store.dispatch(setCurrentUser({ user: currentUser }));
   }
 
   socket.on('newMessage', (messageWithId) => {

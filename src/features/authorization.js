@@ -1,77 +1,42 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 
 import AuthContext from '../Contexts/AuthContext.js';
-import { setCurrentUser } from '../slices/authentificationSlice.js';
 import store from '../store.js';
 import paths from '../routes.js';
 
 export const useAuth = () => useContext(AuthContext);
 
 const setToLocalStorage = (values) => {
-  Object.entries(values)
-    .forEach(([key, value]) => window.localStorage.setItem(key, value));
-};
-
-const makeAuth = {
-  isAuthenticated: false,
-  login: (userInfo, cb, errCb) => {
-    axios.post(paths.loginRequest(), userInfo)
-      .then(({ data }) => {
-        const { token, username } = data;
-        setToLocalStorage({
-          token, username,
-        });
-        cb(username);
-        makeAuth.isAuthenticated = true;
-      }).catch((err) => {
-        console.log(err);
-        errCb(err);
-      });
-  },
-
-  logout: (cb) => {
-    localStorage.clear();
-    cb();
-    makeAuth.isAuthenticated = false;
-  },
-
-  signup: (authInfo, cb, errCb) => {
-    axios.post(paths.signupRequest(), authInfo)
-      .then(({ data }) => {
-        const { token, username } = data;
-        setToLocalStorage({
-          token, username,
-        });
-        cb(username);
-        makeAuth.isAuthenticated = true;
-      }).catch((err) => {
-        if (err.message.includes('409')) {
-          errCb('Conflict');
-        }
-      });
-  },
+  window.localStorage.setItem('userData', JSON.stringify(values));
 };
 
 export const useProvideAuth = () => {
-  // const [user, setUser] = useState(null);
 
-  const login = (data, cb, errCb) => makeAuth.login(data, (username) => {
-    store.dispatch(setCurrentUser({ user: username }));
-    cb();
-  }, errCb);
-
-  const logout = async (cb) => makeAuth.logout(() => {
-    store.dispatch(setCurrentUser({ user: null }));
-    cb();
-  });
-
-  const signup = (data, cb, errCb) => makeAuth.signup(data, (username) => {
-    store.dispatch(setCurrentUser({ user: username }));
-    cb();
-  }, errCb);
-
+  const userAuthData = JSON.parse(
+    localStorage.getItem('userData')
+  );
+  
+  const [user, setUser] = useState(userAuthData);
+  // сделать запрос
+  // изменить стэйт
+  // записать в локал сторадж
+  // вернуть промис
+  const login = (userInfo) => {
+    const some = axios.post(paths.loginRequest(), userInfo)
+      .then(({ data }) => {
+        const { token, username } = data;
+        console.log(username);
+        setUser(username);
+        setToLocalStorage({
+          token, username,
+        });
+      })
+    return some;
+  }
+  const logout = () => {};
+  const signup = () => {};
   return {
-    login, logout, signup,
-  };
+    login, logout, signup, user
+  }
 };

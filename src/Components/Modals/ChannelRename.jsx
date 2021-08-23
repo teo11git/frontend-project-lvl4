@@ -27,34 +27,18 @@ const ChannelRename = ({ channel, existedNames }) => {
         .notOneOf(existedNames),
   });
 
-  const setFormikState = (state, formik) => {
-    switch (state) {
-      case 'submitting':
-        formik.setSubmitting(true);
-        break;
-      case 'success':
-        formik.resetForm();
-        formik.setSubmitting(false);
-        break;
-      case 'failed':
-        formik.setSubmitting(false);
-        break;
-      default:
-        // do nothing
-    }
-  };
-
   const sendName = async (values, formik) => {
     const newChannel = { ...channel, name: values.name };
-    setFormikState('submitting', formik);
+    formik.setSubmitting(true);
     try {
       await socketApi.renameChannel(newChannel);
-      await setFormikState('success', formik);
+      formik.resetForm();
+      formik.setSubmitting(false);
       dispatch(setModalShow({ show: false }));
     } catch (err) {
       console.log(err);
       formik.setFieldError('name', { key: err });
-      setFormikState('failed', formik);
+      formik.setSubmitting(false);
     }
   };
 

@@ -28,34 +28,19 @@ const ChannelNameInputModal = ({ existedNames }) => {
         .max(30)
         .notOneOf(existedNames),
   });
-  const setFormikState = (state, formik) => {
-    switch (state) {
-      case 'submitting':
-        formik.setSubmitting(true);
-        break;
-      case 'success':
-        formik.resetForm();
-        formik.setSubmitting(false);
-        break;
-      case 'failed':
-        formik.setSubmitting(false);
-        break;
-      default:
-        // do nothing
-    }
-  };
 
   const sendName = async (values, formik) => {
     const channel = { name: values.name, removable: true, autor: user };
-    setFormikState('submitting', formik);
+    formik.setSubmitting(true);
     try {
       await socketApi.createNewChannel(channel);
-      await setFormikState('success', formik);
-      await dispatch(setModalShow({ show: false }));
+      formik.resetForm();
+      formik.setSubmitting(false);
+      dispatch(setModalShow({ show: false }));
     } catch (err) {
       console.log(err);
       formik.setFieldError('name', { key: err });
-      setFormikState('failed', formik);
+      formik.setSubmitting(false);
     }
   };
 

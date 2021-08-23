@@ -35,35 +35,18 @@ const InputMessage = () => {
   const id = useSelector((state) => state.channels.currentChannelId);
   const { user } = auth;
 
-  const setFormikState = (state, formik) => {
-    switch (state) {
-      case 'submitting':
-        formik.setSubmitting(true);
-        break;
-      case 'success':
-        formik.resetForm();
-        formik.setSubmitting(false);
-        break;
-      case 'failed':
-        formik.setSubmitting(false);
-        break;
-      default:
-        // do nothing
-    }
-  };
-
   const sendMessage = async (data, formik) => {
     const { message: text } = data;
     const message = { text, autor: user, channelId: id };
-    setFormikState('submitting', formik);
     formik.setSubmitting(true);
     try {
       await socketApi.sendNewMessage(message);
-      await setFormikState('success', formik);
+      formik.resetForm();
+      formik.setSubmitting(false);
     } catch (error) {
       console.log(error);
       formik.setFieldError('message', { key: error });
-      setFormikState('failed', formik);
+      formik.setSubmitting(false);
     }
   };
 

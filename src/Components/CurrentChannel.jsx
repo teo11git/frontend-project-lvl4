@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Container,
 } from 'react-bootstrap';
@@ -24,10 +24,18 @@ const Message = ({ message }) => {
 
 const MessageBox = (props) => {
   const { messages } = props;
+  const messagesEnd = useRef(null);
+  const scrollToBottom = (el) => {
+    el.current.scrollIntoView();
+  };
+  useEffect(() => {
+    scrollToBottom(messagesEnd);
+  });
   return (
     <div id="message-box" className="p-3 d-flex flex-column scroll-enabled">
       {messages.map((message) => (
         <Message key={message.id} message={message} />))}
+      <div ref={messagesEnd} />
     </div>
   );
 };

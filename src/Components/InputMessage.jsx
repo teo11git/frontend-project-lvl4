@@ -33,7 +33,7 @@ const InputMessage = () => {
   const socketApi = useApi();
   const auth = useAuth();
   const id = useSelector((state) => state.channels.currentChannelId);
-  const user = auth.user;
+  const { user } = auth;
 
   const setFormikState = (state, formik) => {
     switch (state) {

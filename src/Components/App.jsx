@@ -8,8 +8,7 @@ import {
 import paths from '../routes.js';
 
 import AuthContext from '../Contexts/AuthContext.js';
-import { useProvideAuth } from '../features/authorization.js';
-import { useAuth } from '../features/authorization.js';
+import { useProvideAuth, useAuth } from '../features/authorization.js';
 
 import MainPage from './MainPage.jsx';
 import LoginForm from './LoginForm.jsx';
@@ -30,18 +29,19 @@ export default function App() {
 
   const PrivateRoute = ({ children }) => {
     const auth = useAuth();
-    console.log(`In app.js user is ${auth.user}`);
+    const isAuthenticated = !!(auth.user);
+    // console.log(`In app.js user is ${auth.user}`);
 
     return (
       <Route
-        render={() => (auth.user)
+        render={() => ((isAuthenticated)
           ? (children)
           : (
             <Redirect
               from={paths.mainPage()}
               to={paths.loginPage()}
             />
-          )}
+          ))}
       />
     );
   };

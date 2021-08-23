@@ -38,18 +38,16 @@ const SignupForm = () => {
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
-  const sendForm = (values, formik) => {
-    const onSuccess = () => {
+  const sendForm = async (values, formik) => {
+    try {
+      await auth.signup(values);
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPage(), history);
-    };
-    const onError = (err) => {
-      if (err === 'Conflict') {
+    } catch (e) {
+      if (e.message.includes('409')) {
         formik.setFieldError('username', 'already_in_use');
       }
-      console.log(err);
-    };
-    auth.signup(values, onSuccess, onError);
+    }
   };
 
   const formik = useFormik({

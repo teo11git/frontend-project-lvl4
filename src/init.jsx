@@ -12,7 +12,7 @@ import {
   addChannel,
   renameChannel,
   deleteChannel,
-  setCurrentChannelId
+  setCurrentChannelId,
 } from './slices/channelsSlice.js';
 
 import APIContext from './Contexts/APIContext.js';
@@ -59,16 +59,16 @@ export default async (socket) => {
     }
     */
   });
-// 
+  //
   const api = implementApi(socket);
 
   return (
-        <Provider store={store}>
-          <I18nextProvider i18n={i18n}>
-            <APIContext.Provider value={api}>
-              <App />
-            </APIContext.Provider>
-          </I18nextProvider>
-        </Provider>
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        <APIContext.Provider value={api}>
+          <App />
+        </APIContext.Provider>
+      </I18nextProvider>
+    </Provider>
   );
 };

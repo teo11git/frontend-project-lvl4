@@ -20,7 +20,7 @@ const runApp = async () => {
 
   console.log(process.env);
 
-  // rollbar.log('Hello world');
+  rollbar.log('Hello world');
 
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';

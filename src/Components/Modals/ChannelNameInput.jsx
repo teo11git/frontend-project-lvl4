@@ -4,17 +4,18 @@ import { useTranslation } from 'react-i18next';
 
 import * as yup from 'yup';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { Modal, Form, Button } from 'react-bootstrap';
 import { setModalShow } from '../../slices/uiSlice.js';
 import { useApi } from '../../features/socketAPI.js';
+import { useAuth } from '../../features/authorization.js';
 
 const ChannelNameInputModal = ({ existedNames }) => {
   const socketApi = useApi();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.authentification);
+  const { user } = useAuth();
   const [t] = useTranslation();
 
   const schema = yup.object().shape({

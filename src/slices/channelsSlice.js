@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import _ from 'lodash';
 
-import store from '../store.js';
+// import store from '../store.js';
 
 const initialState = {
   channels: [],
@@ -27,7 +27,7 @@ export const channelsSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    synchronizeChannels: (state, { payload }) => { state.channels = payload.channels },
+    synchronizeChannels: (state, { payload }) => { state.channels = payload.channels; },
     addChannel: (state, action) => {
       state.channels.push(action.payload);
     },
@@ -36,14 +36,14 @@ export const channelsSlice = createSlice({
     },
     renameChannel: (state, { payload: channel }) => {
       const { id } = channel;
-      const index = state.findIndex((ch) => ch.id === id);
+      const index = state.channels.findIndex((ch) => ch.id === id);
       state.channels[index] = channel;
     },
     deleteChannel: (state, { payload }) => {
       const index = payload.id;
-      const currentChannelId = state.currentChannelId;
+      const { currentChannelId } = state;
       if (currentChannelId === index) {
-        store.dispatch(setCurrentChannelId({ id: 1 }));
+        state.currentChannelId = 1;
       }
 
       _.remove(state.channels, (ch) => ch.id === index);

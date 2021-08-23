@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 
 import AuthContext from '../Contexts/AuthContext.js';
-import store from '../store.js';
 import paths from '../routes.js';
 
 export const useAuth = () => useContext(AuthContext);
@@ -12,18 +11,16 @@ const setToLocalStorage = (values) => {
 };
 
 export const useProvideAuth = () => {
-
   const userAuthData = JSON.parse(
-    localStorage.getItem('userData')
+    localStorage.getItem('userData'),
   );
-  
-  const [user, setUser] = useState(userAuthData);
-  // сделать запрос
-  // изменить стэйт
-  // записать в локал сторадж
-  // вернуть промис
-  const login = (userInfo) => {
-    const some = axios.post(paths.loginRequest(), userInfo)
+
+  const defineLoggedUser = () => userAuthData?.username;
+
+  const [user, setUser] = useState(defineLoggedUser());
+
+  const login = (userInfo) => (
+    axios.post(paths.loginRequest(), userInfo)
       .then(({ data }) => {
         const { token, username } = data;
         console.log(username);
@@ -32,11 +29,24 @@ export const useProvideAuth = () => {
           token, username,
         });
       })
-    return some;
-  }
-  const logout = () => {};
-  const signup = () => {};
+  );
+
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
+  };
+
+  const signup = (authInfo) => (
+    axios.post(paths.signupRequest(), authInfo)
+      .then(({ data }) => {
+        const { token, username } = data;
+        setUser(username);
+        setToLocalStorage({
+          token, username,
+        });
+      })
+  );
   return {
-    login, logout, signup, user
-  }
+    login, logout, signup, user,
+  };
 };

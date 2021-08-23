@@ -15,7 +15,7 @@ import allModals from './Modals/index.js';
 import { useAuth } from '../features/authorization.js';
 import paths from '../routes.js';
 
-const synchronizeWithServer = async (token, dispatch) => {
+const synchronizeWithServer = async (token, dispatch, logOut) => {
   try {
     const responce = await axios.get(paths.getDataRequest(),
       {
@@ -26,6 +26,7 @@ const synchronizeWithServer = async (token, dispatch) => {
     dispatch(synchronizeMessages({ messages }));
     dispatch(setCurrentChannelId({ id: currentChannelId }));
   } catch (e) {
+    logOut();
     console.log(e);
   }
 };
@@ -64,23 +65,20 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const [t] = useTranslation();
-  const token = JSON.parse(localStorage.getItem('userData')).token;
-  console.log(token);  
-
-  useEffect(() => {
-    synchronizeWithServer(token, dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { token } = JSON.parse(localStorage.getItem('userData'));
+  console.log(token);
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
   const logOut = () => {
-    const logOutHandler = () => {
-      makeRedirect('./', history);
-    };
-
-    auth.logout(logOutHandler);
+    auth.logout();
+    makeRedirect('./', history);
   };
+
+  useEffect(() => {
+    synchronizeWithServer(token, dispatch, logOut);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="d-flex flex-column h-100">

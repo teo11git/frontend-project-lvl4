@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -14,8 +14,12 @@ import { useApi } from '../../features/socketAPI.js';
 const ChannelRename = ({ channel, existedNames }) => {
   const socketApi = useApi();
   const dispatch = useDispatch();
+  const input = useRef();
   const [t] = useTranslation();
 
+  useEffect(() => {
+    input.current.focus();
+  });
   const schema = yup.object().shape({
     name:
       yup
@@ -79,6 +83,7 @@ const ChannelRename = ({ channel, existedNames }) => {
               isInvalid={!!errors.name}
               readOnly={isSubmitting}
               data-testid="rename-channel"
+              ref={input}
             />
             <Button type="submit" disabled={isSubmitting} variant="dark" className="ml-auto">
               {t('modals.update')}

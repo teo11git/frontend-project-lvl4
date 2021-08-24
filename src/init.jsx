@@ -29,11 +29,9 @@ export default async (socket) => {
       resources,
     });
 
-  const currentUser = localStorage.getItem('username');
-  const isUserExists = () => currentUser !== undefined;
-  if (isUserExists) {
-    // store.dispatch(setCurrentUser({ user: currentUser }));
-  }
+  const currentUser = JSON.parse(
+    localStorage.getItem('userData'),
+  )?.username;
 
   socket.on('newMessage', (messageWithId) => {
     store.dispatch(addMessage(messageWithId));
@@ -52,14 +50,8 @@ export default async (socket) => {
 
   socket.on('removeChannel', (dataWithId) => {
     store.dispatch(deleteChannel(dataWithId));
-    /*
-    const currentChannelId = store.getState().currentChannelId.id;
-    if (currentChannelId === dataWithId.id) {
-      store.dispatch(setCurrentChannelId({ id: 1 }));
-    }
-    */
   });
-  //
+
   const api = implementApi(socket);
 
   return (

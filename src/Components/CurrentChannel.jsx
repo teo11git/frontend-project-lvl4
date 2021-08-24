@@ -8,19 +8,16 @@ import { useTranslation } from 'react-i18next';
 
 import InputMessage from './InputMessage.jsx';
 
-const Message = ({ message }) => {
-  console.log(message);
-  return (
-    <div className="text-break mb-2 mr-auto">
-      <b>
-        {message.autor}
-        :
-        {' '}
-      </b>
-      {message.text}
-    </div>
-  );
-};
+const Message = ({ message }) => (
+  <div className="text-break mb-2 mr-auto">
+    <b>
+      {message.autor}
+      :
+      {' '}
+    </b>
+    {message.text}
+  </div>
+);
 
 const MessageBox = (props) => {
   const { messages } = props;

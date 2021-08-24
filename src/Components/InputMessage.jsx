@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
@@ -31,9 +31,15 @@ const schema = yup.object().shape({
 const InputMessage = () => {
   const [t] = useTranslation();
   const socketApi = useApi();
-  const auth = useAuth();
+  const { user } = useAuth();
+  const input = useRef(null);
   const id = useSelector((state) => state.channels.currentChannelId);
-  const { user } = auth;
+  console.log(`Render input message component id:${id}`);
+
+  useEffect(() => {
+    console.log('Effect!!!');
+    input.current.focus();
+  });
 
   const sendMessage = async (data, formik) => {
     const { message: text } = data;
@@ -81,6 +87,7 @@ const InputMessage = () => {
           readOnly={isSubmitting}
           className="col-10"
           data-testid="new-message"
+          ref={input}
         />
         <Button type="submit" variant="outline-success" disabled={isSubmitting} className="ml-1">{t('controls.sendMessage')}</Button>
         <Form.Control.Feedback

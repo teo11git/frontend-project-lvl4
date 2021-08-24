@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +16,12 @@ const ChannelNameInputModal = ({ existedNames }) => {
   const socketApi = useApi();
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const input = useRef(null);
   const [t] = useTranslation();
+
+  useEffect(() => {
+    input.current.focus();
+  });
 
   const schema = yup.object().shape({
     name:
@@ -81,8 +86,8 @@ const ChannelNameInputModal = ({ existedNames }) => {
               isValid={touched.name && !errors.name}
               isInvalid={!!errors.name}
               readOnly={isSubmitting}
-              autoFocus
               data-testid="add-channel"
+              ref={input}
             />
             <Button type="submit" variant="dark" disabled={isSubmitting} className="ml-auto">
               {t('modals.create')}

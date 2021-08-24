@@ -66,7 +66,6 @@ const MainPage = () => {
   const auth = useAuth();
   const [t] = useTranslation();
   const { token } = JSON.parse(localStorage.getItem('userData'));
-  console.log(token);
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 

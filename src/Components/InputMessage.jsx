@@ -34,10 +34,10 @@ const InputMessage = () => {
   const { user } = useAuth();
   const input = useRef(null);
   const id = useSelector((state) => state.channels.currentChannelId);
-  console.log(`Render input message component id:${id}`);
+  // console.log(`Render input message component id:${id}`);
 
   useEffect(() => {
-    console.log('Effect!!!');
+    // console.log('Effect!!!');
     input.current.focus();
   });
 

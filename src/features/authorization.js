@@ -23,7 +23,6 @@ export const useProvideAuth = () => {
     axios.post(paths.loginRequest(), userInfo)
       .then(({ data }) => {
         const { token, username } = data;
-        console.log(username);
         setUser(username);
         setToLocalStorage({
           token, username,

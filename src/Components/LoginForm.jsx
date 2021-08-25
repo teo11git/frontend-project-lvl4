@@ -25,18 +25,6 @@ const LoginForm = () => {
   const [t] = useTranslation();
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
-  /*
-  const sendForm = (values, formik) => {
-    const onSuccess = () => {
-      formik.setStatus('Auth success');
-      makeRedirect(paths.mainPage(), history);
-    };
-    const onError = () => {
-      formik.setStatus('Auth error');
-    };
-    auth.login(values, onSuccess, onError);
-  };
-*/
 
   const sendForm = async (values, formik) => {
     try {
@@ -44,7 +32,7 @@ const LoginForm = () => {
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPage(), history);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       formik.setStatus('Auth error');
     }
   };

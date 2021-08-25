@@ -32,7 +32,6 @@ const LoginForm = () => {
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPage(), history);
     } catch (err) {
-      // console.log(err);
       formik.setStatus('Auth error');
     }
   };

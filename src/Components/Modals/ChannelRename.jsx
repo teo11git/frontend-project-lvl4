@@ -40,7 +40,6 @@ const ChannelRename = ({ channel, existedNames }) => {
       formik.setSubmitting(false);
       dispatch(setModalShow({ show: false }));
     } catch (err) {
-      console.log(err);
       formik.setFieldError('name', { key: err });
       formik.setSubmitting(false);
     }

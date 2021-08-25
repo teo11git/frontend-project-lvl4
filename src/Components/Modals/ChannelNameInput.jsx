@@ -19,7 +19,6 @@ const ChannelNameInputModal = ({ existedNames }) => {
   const input = useRef(null);
   const [t] = useTranslation();
 
-  throw new Error('Special for rollbar');
   useEffect(() => {
     input.current.focus();
   });
@@ -44,7 +43,6 @@ const ChannelNameInputModal = ({ existedNames }) => {
       formik.setSubmitting(false);
       dispatch(setModalShow({ show: false }));
     } catch (err) {
-      console.log(err);
       formik.setFieldError('name', { key: err });
       formik.setSubmitting(false);
     }

@@ -30,7 +30,6 @@ export default function App() {
   const PrivateRoute = ({ children }) => {
     const auth = useAuth();
     const isAuthenticated = !!(auth.user);
-    // console.log(`In app.js user is ${auth.user}`);
 
     return (
       <Route

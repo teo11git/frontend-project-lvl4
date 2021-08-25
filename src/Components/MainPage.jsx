@@ -27,7 +27,6 @@ const synchronizeWithServer = async (token, dispatch, logOut) => {
     dispatch(setCurrentChannelId({ id: currentChannelId }));
   } catch (e) {
     logOut();
-    console.log(e);
   }
 };
 const Modals = () => {

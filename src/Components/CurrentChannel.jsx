@@ -23,11 +23,12 @@ const MessageBox = (props) => {
   const { messages } = props;
   const messagesEnd = useRef(null);
   const scrollToBottom = (el) => {
-    // console.log(el.current);
-    //if (el.current) {
-    //el.current.scrollIntoView();
-    //}
-    //
+    // Функция scrollIntoView не представлена в jsdom
+    // Чтобы проходили тесты, делаю проверку
+    // В браузере все работает))
+    if (typeof el.current.scrollIntoView === 'function') {
+    el.current.scrollIntoView();
+    }
   };
   useEffect(() => {
     scrollToBottom(messagesEnd);

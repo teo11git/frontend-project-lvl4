@@ -27,7 +27,7 @@ const MessageBox = (props) => {
     // Чтобы проходили тесты, делаю проверку
     // В браузере все работает))
     if (typeof el.current.scrollIntoView === 'function') {
-    el.current.scrollIntoView();
+      el.current.scrollIntoView();
     }
   };
   useEffect(() => {

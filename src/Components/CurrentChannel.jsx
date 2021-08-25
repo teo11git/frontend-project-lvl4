@@ -24,9 +24,9 @@ const MessageBox = (props) => {
   const messagesEnd = useRef(null);
   const scrollToBottom = (el) => {
     // console.log(el.current);
-    if (el.current) {
-    el.current.scrollIntoView();
-    }
+    //if (el.current) {
+    //el.current.scrollIntoView();
+    //}
     //
   };
   useEffect(() => {

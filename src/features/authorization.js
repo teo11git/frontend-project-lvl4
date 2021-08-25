@@ -19,32 +19,28 @@ export const useProvideAuth = () => {
 
   const [user, setUser] = useState(defineLoggedUser());
 
-  const login = (userInfo) => (
-    axios.post(paths.loginRequest(), userInfo)
-      .then(({ data }) => {
-        const { token, username } = data;
-        setUser(username);
-        setToLocalStorage({
-          token, username,
-        });
-      })
-  );
+  const login = async (userInfo) => {
+    const { data } = await axios.post(paths.loginRequest(), userInfo);
+    const { token, username } = data;
+    setUser(username);
+    setToLocalStorage({
+      token, username,
+    });
+  };
 
   const logout = () => {
     localStorage.clear();
     setUser(null);
   };
 
-  const signup = (authInfo) => (
-    axios.post(paths.signupRequest(), authInfo)
-      .then(({ data }) => {
-        const { token, username } = data;
-        setUser(username);
-        setToLocalStorage({
-          token, username,
-        });
-      })
-  );
+  const signup = async (authInfo) => {
+    const { data } = await axios.post(paths.signupRequest(), authInfo);
+    const { token, username } = data;
+    setUser(username);
+    setToLocalStorage({
+      token, username,
+    });
+  };
   return {
     login, logout, signup, user,
   };

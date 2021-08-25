@@ -19,6 +19,8 @@ const runApp = async () => {
     endpoint: 'https://api.rollbar.com/api/1/item/',
   });
 
+  rollbar.log();
+
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }

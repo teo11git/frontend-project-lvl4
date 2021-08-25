@@ -19,7 +19,7 @@ const runApp = async () => {
     endpoint: 'https://api.rollbar.com/api/1/item/',
   });
 
-  console.log(process.env.NODE_ENV);
+  console.log(process.env.POST_SERVER_ITEM_ACCESS_TOKEN);
 
   rollbar.log('Hello world');
 

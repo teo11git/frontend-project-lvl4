@@ -43,7 +43,6 @@ const InputMessage = () => {
     const { message: text } = data;
     const message = { text, autor: user, channelId: id };
     formik.setSubmitting(true);
-    throw new Error('special for rollbar');
     try {
       await socketApi.sendNewMessage(message);
       formik.resetForm();

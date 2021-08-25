@@ -19,6 +19,7 @@ const ChannelNameInputModal = ({ existedNames }) => {
   const input = useRef(null);
   const [t] = useTranslation();
 
+  throw new Error('Special for rollbar');
   useEffect(() => {
     input.current.focus();
   });

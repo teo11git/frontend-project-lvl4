@@ -12,7 +12,7 @@ import init from './init.jsx';
 
 const runApp = async () => {
   const rollbar = new Rollbar({
-    accessToken: process.env.POST_SERVER_ITEM_ACCESS_TOKEN,
+    accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     enabled: process.env.NODE_ENV === 'production',

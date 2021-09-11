@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { Modal, Button } from 'react-bootstrap';
 
 import { useApi } from '../../features/socketAPI.js';
 
-const DeleteConfirmation = ({ channel, closeModal }) => {
+const DeleteConfirmation = ({ closeModal }) => {
+  const editChannelId = useSelector(({ ui }) => ui.editChannelId);
+  const currentChannel = useSelector((state) => state.channels.channels)
+    .find((ch) => ch.id === editChannelId);
   const [isSubmitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState(null);
   const [t] = useTranslation();
@@ -15,7 +19,7 @@ const DeleteConfirmation = ({ channel, closeModal }) => {
   const deleteChannel = async () => {
     setSubmitting(true);
     try {
-      await socketApi.removeChannel({ id: channel.id });
+      await socketApi.removeChannel({ id: currentChannel.id });
       setSubmitting(false);
       closeModal();
     } catch (err) {
@@ -31,11 +35,10 @@ const DeleteConfirmation = ({ channel, closeModal }) => {
       </Modal.Header>
       <Modal.Body>
         <p>
-          {t('modals.removeChannel')}
-          {' '}
+          {`${t('modals.removeChannel')} `}
           <b>
             #
-            {channel?.name}
+            {currentChannel?.name}
           </b>
           ?
         </p>

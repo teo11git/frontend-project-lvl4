@@ -4,14 +4,19 @@ import { useTranslation } from 'react-i18next';
 
 import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { Modal, Form, Button } from 'react-bootstrap';
 import { setModalShow } from '../../slices/uiSlice.js';
 import { useApi } from '../../features/socketAPI.js';
 
-const ChannelRename = ({ channel, existedNames }) => {
+const ChannelRename = () => {
+  const existedNames = useSelector((state) => state.channels.channels)
+    .map((ch) => ch.name);
+  const editChannelId = useSelector(({ ui }) => ui.editChannelId);
+  const currentChannel = useSelector((state) => state.channels.channels)
+    .find((ch) => ch.id === editChannelId);
   const socketApi = useApi();
   const dispatch = useDispatch();
   const input = useRef();
@@ -28,11 +33,12 @@ const ChannelRename = ({ channel, existedNames }) => {
         .trim()
         .lowercase()
         .max(30)
-        .notOneOf(existedNames),
+        .notOneOf(existedNames.map((name) => name.toLowerCase()),
+          'already_in_use'),
   });
 
   const sendName = async (values, formik) => {
-    const newChannel = { ...channel, name: values.name };
+    const newChannel = { ...currentChannel, name: values.name };
     formik.setSubmitting(true);
     try {
       await socketApi.renameChannel(newChannel);
@@ -47,7 +53,7 @@ const ChannelRename = ({ channel, existedNames }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: channel.name,
+      name: currentChannel.name,
     },
     onSubmit: sendName,
     validationSchema: schema,
@@ -88,7 +94,7 @@ const ChannelRename = ({ channel, existedNames }) => {
               {t('modals.update')}
             </Button>
             <Form.Control.Feedback type="invalid" className="col-9">
-              {t(`validationErrors.${errors?.name?.key}`, { n: errors?.name?.value })}
+              {t(`validationErrors.${errors.name}`)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>

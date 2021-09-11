@@ -17,6 +17,7 @@ const Channel = ({ channel }) => {
   const isRemovable = removable === true;
   const dispatch = useDispatch();
   const [t] = useTranslation();
+  const activeChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const switchChannel = (currentId) => () => {
     dispatch(setCurrentChannelId({ id: currentId }));
@@ -34,9 +35,14 @@ const Channel = ({ channel }) => {
     dispatch(setModalShow({ show: true }));
   };
 
+  const getButtonClassName = () => {
+    const isActiveChannel = channel.id === activeChannelId;
+    return `w-100 border-${(isActiveChannel ? 'bottom' : 0)} text-left`;
+  };
+
   return (
     <Nav.Item className="d-flex justify-content-between">
-      <Button variant="pills" className="w-100 rounded-0 text-left" onClick={switchChannel(id)}>
+      <Button variant="pills" className={getButtonClassName()} onClick={switchChannel(id)}>
         <span className="me-1">#</span>
         {name}
       </Button>

@@ -12,7 +12,6 @@ import {
   addChannel,
   renameChannel,
   deleteChannel,
-  setCurrentChannelId,
 } from './slices/channelsSlice.js';
 
 import APIContext from './Contexts/APIContext.js';
@@ -29,19 +28,12 @@ export default async (socket) => {
       resources,
     });
 
-  const currentUser = JSON.parse(
-    localStorage.getItem('userData'),
-  )?.username;
-
   socket.on('newMessage', (messageWithId) => {
     store.dispatch(addMessage(messageWithId));
   });
 
   socket.on('newChannel', (channelWithId) => {
     store.dispatch(addChannel(channelWithId));
-    if (currentUser === channelWithId.autor) {
-      store.dispatch(setCurrentChannelId({ id: channelWithId.id }));
-    }
   });
 
   socket.on('renameChannel', (channel) => {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import {
-  Card, Form, Button, Alert,
+  Card, Form, Button,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -12,23 +12,16 @@ import paths from '../routes.js';
 import { useAuth } from '../features/authorization.js';
 import MainNavbar from './MainNavbar.jsx';
 
-yup.setLocale({
-  mixed: {
-    required: 'required',
-    oneOf: 'must_match',
-  },
-});
-
 const schema = yup.object().shape({
   username:
     yup
       .string()
-      .required()
+      .required('required')
       .min(3, 'nameLength')
       .max(20, 'nameLength'),
   password: yup.string().required().min(6, 'passLength'),
   passwordConfirm: yup.string().required()
-    .oneOf([yup.ref('password'), null]),
+    .oneOf([yup.ref('password'), null], 'must_match'),
 });
 
 const SignupForm = () => {
@@ -43,8 +36,8 @@ const SignupForm = () => {
       await auth.signup(values);
       formik.setStatus('Auth success');
       makeRedirect(paths.mainPage(), history);
-    } catch (e) {
-      if (e.message.includes('409')) {
+    } catch (err) {
+      if (err.response.status === 409) {
         formik.setFieldError('username', 'already_in_use');
       }
     }
@@ -127,15 +120,6 @@ const SignupForm = () => {
             </Button>
           </Form>
         </Card.Body>
-        {formik.status === 'Auth error'
-          ? (
-            <Card.Footer>
-              <Alert variant="danger" className="text-center">
-                Cannot found username or password!
-              </Alert>
-            </Card.Footer>
-          )
-          : null}
       </Card>
     </>
   );

@@ -10,22 +10,13 @@ import * as yup from 'yup';
 import { useApi } from '../features/socketAPI.js';
 import { useAuth } from '../features/authorization.js';
 
-yup.setLocale({
-  mixed: {
-    required: () => ({ key: 'required' }),
-  },
-  string: {
-    max: ({ max }) => ({ key: 'charMax', value: max }),
-  },
-});
-
 const schema = yup.object().shape({
   message:
     yup
       .string()
-      .required()
+      .required('required')
       .trim()
-      .max(280),
+      .max(280, 'charMax'),
 });
 
 const InputMessage = () => {
@@ -91,7 +82,7 @@ const InputMessage = () => {
           className="col-9"
           type="invalid"
         >
-          {t(`validationErrors.${errors?.message?.key}`, { n: errors?.message?.value })}
+          {t(`validationErrors.${errors.message}`)}
         </Form.Control.Feedback>
       </Form>
     </div>

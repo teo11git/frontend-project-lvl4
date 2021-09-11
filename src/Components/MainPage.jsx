@@ -1,62 +1,35 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { synchronizeChannels, setCurrentChannelId } from '../slices/channelsSlice.js';
 import { synchronizeMessages } from '../slices/messagesSlice';
-import { setModalShow } from '../slices/uiSlice.js';
 
+import Modals from './Modals/index.jsx';
 import MainNavbar from './MainNavbar.jsx';
 import Chat from './Chat.jsx';
-import allModals from './Modals/index.js';
 import { useAuth } from '../features/authorization.js';
 import paths from '../routes.js';
 
-const synchronizeWithServer = async (token, dispatch, logOut) => {
+const synchronizeWithServer = async (auth, dispatch, logOut) => {
   try {
     const responce = await axios.get(paths.getDataRequest(),
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: auth.getHttpHeader() },
       });
     const { channels, messages, currentChannelId } = responce.data;
     dispatch(synchronizeChannels({ channels }));
     dispatch(synchronizeMessages({ messages }));
     dispatch(setCurrentChannelId({ id: currentChannelId }));
-  } catch (e) {
-    logOut();
+  } catch (err) {
+    console.log(err);
+    if (err.response.status === 401) {
+      logOut();
+    }
   }
-};
-const Modals = () => {
-  const dispatch = useDispatch();
-  const modalType = useSelector((state) => state.ui.modalType);
-  const modalShow = useSelector((state) => state.ui.modalShow);
-  const existedNames = useSelector((state) => state.channels.channels)
-    .map((ch) => ch.name);
-  const editChannelId = useSelector(({ ui }) => ui.editChannelId);
-
-  const neededChannel = useSelector((state) => state.channels.channels)
-    .find((ch) => ch.id === editChannelId);
-
-  const handleClose = () => {
-    dispatch(setModalShow({ show: false }));
-  };
-
-  const CurrentModal = allModals[modalType];
-  return (
-    <Modal
-      show={modalShow}
-      onHide={handleClose}
-    >
-      <CurrentModal
-        channel={neededChannel}
-        existedNames={existedNames}
-        closeModal={handleClose}
-      />
-    </Modal>
-  );
 };
 
 const MainPage = () => {
@@ -64,7 +37,6 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const [t] = useTranslation();
-  const { token } = JSON.parse(localStorage.getItem('userData'));
 
   const makeRedirect = (to, historyList) => historyList.replace(to);
 
@@ -74,7 +46,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    synchronizeWithServer(token, dispatch, logOut);
+    synchronizeWithServer(auth, dispatch, logOut);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

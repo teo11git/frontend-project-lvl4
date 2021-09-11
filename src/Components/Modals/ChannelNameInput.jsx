@@ -4,15 +4,18 @@ import { useTranslation } from 'react-i18next';
 
 import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { Modal, Form, Button } from 'react-bootstrap';
 import { setModalShow } from '../../slices/uiSlice.js';
+import { setCurrentChannelId } from '../../slices/channelsSlice.js';
 import { useApi } from '../../features/socketAPI.js';
 import { useAuth } from '../../features/authorization.js';
 
-const ChannelNameInputModal = ({ existedNames }) => {
+const ChannelNameInputModal = () => {
+  const existedNames = useSelector((state) => state.channels.channels)
+    .map((ch) => ch.name);
   const socketApi = useApi();
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -30,20 +33,24 @@ const ChannelNameInputModal = ({ existedNames }) => {
         .required()
         .trim()
         .lowercase()
-        .max(30)
-        .notOneOf(existedNames),
+        .max(30, 'charMax')
+        .notOneOf(
+          existedNames.map((name) => name.toLowerCase()),
+          'already_in_use',
+        ),
   });
 
   const sendName = async (values, formik) => {
     const channel = { name: values.name, removable: true, autor: user };
     formik.setSubmitting(true);
     try {
-      await socketApi.createNewChannel(channel);
+      const newChannel = await socketApi.createNewChannel(channel);
       formik.resetForm();
       formik.setSubmitting(false);
+      dispatch(setCurrentChannelId({ id: newChannel.id }));
       dispatch(setModalShow({ show: false }));
     } catch (err) {
-      formik.setFieldError('name', { key: err });
+      formik.setFieldError('name', err);
       formik.setSubmitting(false);
     }
   };
@@ -95,7 +102,8 @@ const ChannelNameInputModal = ({ existedNames }) => {
               type="invalid"
               className="col-9"
             >
-              {t(`validationErrors.${errors?.name?.key}`, { n: errors?.name?.value })}
+              {console.log(errors.name)}
+              {t(`validationErrors.${errors.name}`)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>

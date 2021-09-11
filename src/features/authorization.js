@@ -15,14 +15,20 @@ export const useProvideAuth = () => {
     localStorage.getItem('userData'),
   );
 
-  const defineLoggedUser = () => userAuthData?.username;
+  const [user, setUser] = useState(
+    userAuthData?.username,
+  );
+  const [keyToken, setToken] = useState(
+    userAuthData?.token,
+  );
 
-  const [user, setUser] = useState(defineLoggedUser());
+  const getHttpHeader = () => `Bearer ${keyToken}`;
 
   const login = async (userInfo) => {
     const { data } = await axios.post(paths.loginRequest(), userInfo);
     const { token, username } = data;
     setUser(username);
+    setToken(token);
     setToLocalStorage({
       token, username,
     });
@@ -42,6 +48,6 @@ export const useProvideAuth = () => {
     });
   };
   return {
-    login, logout, signup, user,
+    login, logout, signup, user, getHttpHeader,
   };
 };

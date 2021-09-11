@@ -102,7 +102,6 @@ const ChannelNameInputModal = () => {
               type="invalid"
               className="col-9"
             >
-              {console.log(errors.name)}
               {t(`validationErrors.${errors.name}`)}
             </Form.Control.Feedback>
           </Form.Group>

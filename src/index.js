@@ -11,6 +11,7 @@ import Rollbar from 'rollbar';
 import init from './init.jsx';
 
 const runApp = async () => {
+  /* eslint-disable no-unused-vars */
   const rollbar = new Rollbar({
     accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
     captureUncaught: true,
@@ -18,7 +19,7 @@ const runApp = async () => {
     enabled: process.env.NODE_ENV === 'production',
     endpoint: 'https://api.rollbar.com/api/1/item/',
   });
-
+  /* eslint-enable no-unused-vars */
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }

@@ -37,7 +37,7 @@ const Channel = ({ channel }) => {
 
   const getButtonClassName = () => {
     const isActiveChannel = channel.id === activeChannelId;
-    return `w-100 border-${(isActiveChannel ? 'bottom' : 0)} text-left`;
+    return `w-100 ${(isActiveChannel ? 'border-dark' : 'border-0')} text-left`;
   };
 
   return (

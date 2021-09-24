@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -14,12 +14,13 @@ import Chat from './Chat.jsx';
 import { useAuth } from '../features/authorization.js';
 import paths from '../routes.js';
 
-const synchronizeWithServer = async (auth, dispatch, logOut) => {
+const synchronizeWithServer = async (auth, dispatch, logOut, setLoadState) => {
   try {
     const responce = await axios.get(paths.getDataRequest(),
       {
         headers: { Authorization: auth.getHttpHeader() },
       });
+    setLoadState(true);
     const { channels, messages, currentChannelId } = responce.data;
     dispatch(synchronizeChannels({ channels }));
     dispatch(synchronizeMessages({ messages }));
@@ -33,6 +34,7 @@ const synchronizeWithServer = async (auth, dispatch, logOut) => {
 };
 
 const MainPage = () => {
+  const [didDataLoad, setLoadState] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const auth = useAuth();
@@ -46,19 +48,28 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    synchronizeWithServer(auth, dispatch, logOut);
+    synchronizeWithServer(auth, dispatch, logOut, setLoadState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div className="d-flex flex-column h-100">
-      <MainNavbar>
-        <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
-      </MainNavbar>
-      <Chat />
-      <Modals />
-    </div>
-  );
+  return (didDataLoad
+    ? (
+      <div className="d-flex flex-column h-100">
+        <MainNavbar>
+          <Button type="button" variant="link" className="text-light" onClick={logOut}>{t('controls.logout')}</Button>
+        </MainNavbar>
+        <Chat />
+        <Modals />
+      </div>
+    )
+    : (
+      <div className="spinner-container">
+        <Spinner animation="border" variant="success" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+        <b>Loading</b>
+      </div>
+    ));
 };
 
 export default MainPage;

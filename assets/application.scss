@@ -6,3 +6,10 @@
   flex-basis: 50px;
   overflow: auto;
 }
+.spinner-container {
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

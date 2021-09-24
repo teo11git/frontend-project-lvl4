@@ -43,6 +43,7 @@ export const useProvideAuth = () => {
     const { data } = await axios.post(paths.signupRequest(), authInfo);
     const { token, username } = data;
     setUser(username);
+    setToken(token);
     setToLocalStorage({
       token, username,
     });

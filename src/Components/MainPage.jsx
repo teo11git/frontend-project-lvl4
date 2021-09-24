@@ -28,6 +28,7 @@ const synchronizeWithServer = async (auth, dispatch, logOut, setLoadState) => {
   } catch (err) {
     console.log(err);
     if (err.response.status === 401) {
+      console.log('Auth error!');
       logOut();
     }
   }

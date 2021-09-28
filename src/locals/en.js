@@ -45,7 +45,8 @@ export default {
       already_in_use: 'Sorry, name already in use',
       connection_lost: 'Network error',
       incorrect_name_pass: 'Incorrect name and(or) password',
-      charMax: 'Must be at most 30 characters',
+      channelNameLength: 'Must be at most 30 characters',
+      inputMessageLength: 'Must be at most 280 characters',
     },
     headers: {
       channels: 'Channels',

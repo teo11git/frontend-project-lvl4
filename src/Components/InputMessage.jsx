@@ -16,7 +16,7 @@ const schema = yup.object().shape({
       .string()
       .required('required')
       .trim()
-      .max(280, 'charMax'),
+      .max(280, 'inputMessageLength'),
 });
 
 const InputMessage = () => {
@@ -55,6 +55,8 @@ const InputMessage = () => {
   const {
     handleSubmit, handleChange, values, touched, errors, isSubmitting,
   } = formik;
+
+  // t(`validationErrors.${errors.message?.key}`, { value: errors.message?.value})}
 
   return (
     <div className="mt-auto">

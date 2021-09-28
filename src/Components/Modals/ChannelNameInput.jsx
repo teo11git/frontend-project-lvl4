@@ -30,10 +30,10 @@ const ChannelNameInputModal = () => {
     name:
       yup
         .string()
-        .required()
+        .required('required')
         .trim()
         .lowercase()
-        .max(30, 'charMax')
+        .max(30, 'channelNameLength')
         .notOneOf(
           existedNames.map((name) => name.toLowerCase()),
           'already_in_use',

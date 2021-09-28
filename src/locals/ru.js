@@ -45,7 +45,8 @@ export default {
       already_in_use: 'Извините, имя занято',
       connection_lost: 'Ошибка сети',
       incorrect_name_pass: 'Неверные имя пользователя или пароль',
-      charMax: 'Не более 30 символов',
+      channelNameLength: 'Не более 30 символов',
+      inputMessageLength: 'Не более 280 символов',
     },
     headers: {
       channels: 'Каналы',

@@ -29,10 +29,10 @@ const ChannelRename = () => {
     name:
       yup
         .string()
-        .required()
+        .required('required')
         .trim()
         .lowercase()
-        .max(30)
+        .max(30, 'channelNameLength')
         .notOneOf(existedNames.map((name) => name.toLowerCase()),
           'already_in_use'),
   });

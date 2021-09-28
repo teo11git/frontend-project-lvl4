@@ -19,8 +19,8 @@ const schema = yup.object().shape({
       .required('required')
       .min(3, 'nameLength')
       .max(20, 'nameLength'),
-  password: yup.string().required().min(6, 'passLength'),
-  passwordConfirm: yup.string().required()
+  password: yup.string().required('required').min(6, 'passLength'),
+  passwordConfirm: yup.string().required('required')
     .oneOf([yup.ref('password'), null], 'must_match'),
 });
 
